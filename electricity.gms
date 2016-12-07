@@ -1,7 +1,7 @@
 *----------------------------------------------*
 *electricity sector division
-*20151215 µçÁ¦Êý¾ÝÐÞ¸Äºó£¬´æÔÚÎ¢Ð¡Æ«²î£¬ÓëffactorÓÐ¹Ø£¬ÒÔºó´ý²é
-*20161201,¸üÐÂ2012ÄêÊý¾Ý£¬Ê¹ÓÃÐÂµÄ²ð·Ö·½·¨£¬Ô­Êý¾ÝÔÚelectricityÎÄ¼þ¼Ð
+*20151215 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸Äºó£¬´ï¿½ï¿½ï¿½Î¢Ð¡Æ«ï¿½î£¬ï¿½ï¿½ffactorï¿½Ð¹Ø£ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½
+*20161201,ï¿½ï¿½ï¿½ï¿½2012ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½Ê¹ï¿½ï¿½ï¿½ÂµÄ²ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½electricityï¿½Ä¼ï¿½ï¿½ï¿½
 *----------------------------------------------*
 $CALL GDXXRW.EXE elec.xlsx par=Eprop rng=A1:J34
 
@@ -13,6 +13,14 @@ $LOAD Eprop
 *$LOAD elec_t
 *$LOAD mkup_t
 $GDXIN
+
+parameter enesta   substitution elasticity between different sub_elec    from EPPA 6
+          emkup           electricity markup
+          emkup0          base year electricity markup
+          p_ff            proportion of fix-factor
+          check1
+          check2;
+
 
 *=== transfer unit to billion yuan
 Eprop(i,sub_elec)=Eprop(i,sub_elec)/100000;
@@ -33,12 +41,24 @@ parameter
          outputelec0     output of electricity generation
          Toutputelec0                                    ;
 
+         enesta=1.5;
+
+*== markup factor
+         emkup(sub_elec)       =      1;
+*         emkup("wind")    =      1.3;
+*         emkup("solar")   =      2.5;
+*         emkup("Biomass")     =      1.8;
+*== switch for markup
+
+         emkup(sub_elec)       =      1;
+         emkup0(sub_elec)      =      emkup(sub_elec);
 
 
-lelec0(sub_elec) =       Eprop("labor",sub_elec);
-kelec0(sub_elec) =       Eprop("capital",sub_elec);
 
-intelec0(i,sub_elec) =   Eprop(i,sub_elec);
+
+lelec0(sub_elec) =       Eprop("labor",sub_elec)/emkup(sub_elec);
+kelec0(sub_elec) =       Eprop("capital",sub_elec)/emkup(sub_elec);
+intelec0(i,sub_elec) =   Eprop(i,sub_elec)/emkup(sub_elec);
 taxelec0(sub_elec)=      Eprop("tax",sub_elec);
 
 *==to be updata
@@ -83,28 +103,11 @@ FIT_v(sub_elec)=0;
 FIT_v(sub_elec)$wsb(sub_elec)=(FIT(sub_elec)-FIT("coal"))*egen_data("Gwh",sub_elec)*10**6/10**9;
 
 subelec0(sub_elec) = FIT_v(sub_elec);
-*subelec0(sub_elec) = 0;
 taxelec0(sub_elec) = taxelec0(sub_elec)+subelec0(sub_elec)  ;
 
 display  FIT_v,subelec0,taxelec0;
 
-
-parameter enesta   substitution elasticity between different sub_elec    from EPPA 6
-          emkup           electricity markup
-          emkup0          base year electricity markup
-          p_ff            proportion of fix-factor
-          check1
-          check2;
-enesta=1.5;
-
-*== markup factor
-emkup(sub_elec)       =      1;
-*emkup("wind")    =      1.3;
-*emkup("solar")   =      2.5;
-*emkup("Biomass")     =      1.8;
-
-emkup0(sub_elec)      =      emkup(sub_elec);
-
+*==update outputelec0
 outputelec0(sub_elec)=   emkup(sub_elec)*(lelec0(sub_elec)+kelec0(sub_elec)+ffelec0(sub_elec)+sum(i,intelec0(i,sub_elec)))+(taxelec0(sub_elec)-subelec0(sub_elec));
 
 Toutputelec0         =   sum(sub_elec,outputelec0(sub_elec));
@@ -117,6 +120,7 @@ p_ff(sub_elec)    =      emkup(sub_elec)*ffelec0(sub_elec)/((1-taxelec0(sub_elec
 check1=output0("elec")-sum(sub_elec,outputelec0(sub_elec));
 
 *== key debug points=======
+*emarkup
 
 fact('capital')=fact('capital')-sum(sub_elec,ffelec0(sub_elec)*emkup(sub_elec));
 
@@ -133,7 +137,7 @@ outputelec0(sub_elec)=egen_data("Gwh",sub_elec)/1000;
 
 
 
-*EPPA 6 elecpower Ë®µçºÍºËµçµÄ×ÔÈ»ÒªËØµ¯ÐÔ
+*EPPA 6 elecpower Ë®ï¿½ï¿½ï¿½ÍºËµï¿½ï¿½ï¿½ï¿½ï¿½È»Òªï¿½Øµï¿½ï¿½ï¿½
 esub(sub_elec,"ff")=0.2;
 esub("nuclear","ff")=0.6*p_ff("nuclear")/(1-p_ff("nuclear"));
 esub("hydro","ff")=0.5*p_ff("hydro")/(1-p_ff("hydro"));
@@ -142,10 +146,3 @@ esub("wind","ff")=0.25;
 
 
 display costelec0,outputelec0,esub;
-
-
-
-
-
-
-

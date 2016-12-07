@@ -716,9 +716,9 @@ PUT   MPS,'$MODEL:CHINA3E'/;
 {  181}    );
 {  181}  );
 {  181}  LOOP((SUB_ELEC),
-{  181}    IF(ABS(FFELEC0(SUB_ELEC)) GT MPSEPS,
+{  181}    IF(ABS((FFELEC0(SUB_ELEC)*EMKUP(SUB_ELEC))) GT MPSEPS,
 {  181}      PUT /,'E:PFFELEC''.'SUB_ELEC.TL;
-{  181}      PUT /,'+Q:'FFELEC0(SUB_ELEC);
+{  181}      PUT /,'+Q:'(FFELEC0(SUB_ELEC)*EMKUP(SUB_ELEC));
 {  181}      IF ((FFELEC0(SUB_ELEC)), PUT /'+','R:SFFELEC''.'SUB_ELEC.TL );
 {  185}    );
 {  185}  );
@@ -937,6 +937,6 @@ PUT / '$PEPS:1.E-6'/;
 PUT / '$SOLVE'/;
 PUTCLOSE   MPS;
 CHINA3E.INTEGER1 = CHINA3E.INTEGER1 + 1;
-$IF %CHINA3E%=="12/07/1611:48:49" $EXIT
+$IF %CHINA3E%=="12/07/1615:09:46" $EXIT
 $error model.gen file is inconsistent
 $abort preprocessor must be reinvoked

@@ -334,6 +334,9 @@ phi=0.7;
 *== FIT
 *pelec.fx(sub_elec)$wsb(sub_elec)=1.1*costelec0(sub_elec);
 
+*== subsidy
+subelec0(sub_elec)=0;
+
 China3E.iterlim =100000;
 
 $include China3E.gen

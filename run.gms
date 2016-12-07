@@ -16,7 +16,7 @@ $include core_1207
 *$include sim
 
 *========dynamic policy simulation========
-*$include dynamic
+$include dynamic
 *$include dynamic-calibration
 *$include dynamic-基准情景
 *$include dynamic-政策情景

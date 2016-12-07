@@ -194,7 +194,7 @@ e:pk                 q:fact("capital")                                      r:gp
 e:pls(lm)                q:(tlabor_s0(lm))                                                 r:gprod
 e:pls(lm)$ur0(lm)             q:(-tlabor_s0(lm))                  r:gprod2(lm)
 e:pffact(x)          q:ffact0(x)                 r:sff(x)$ffact0(x)
-e:pffelec(sub_elec)  q:ffelec0(sub_elec)         r:sffelec(sub_elec)$ffelec0(sub_elec)
+e:pffelec(sub_elec)  q:(ffelec0(sub_elec)*emkup(sub_elec))         r:sffelec(sub_elec)$ffelec0(sub_elec)
 
 *exogenous endowment of net exports(include variances)
 
@@ -334,6 +334,12 @@ phi=0.7;
 *== FIT
 *pelec.fx(sub_elec)$wsb(sub_elec)=1.1*costelec0(sub_elec);
 
+*== subsidy
+*subelec0(sub_elec)=0;
+
+*== technilical change
+*emkup(sub_elec)$wsb(sub_elec)=emkup(sub_elec)*0.1;
+
 China3E.iterlim =100000;
 
 $include China3E.gen
@@ -349,3 +355,17 @@ display check2;
 
 
 
+parameter
+report1    reporting variable
+report2    reporting variable
+report3    reporting variable
+report4    reporting variable
+report5
+report6
+report7
+report8
+report9
+report10
+report11
+report12
+;
