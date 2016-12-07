@@ -1,0 +1,1541 @@
+GAMS 24.4.3  r51699 Released Apr  2, 2015 WIN-VS8 x86 32bit/MS Windows 04/12/16 17:44:42 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  *----------------------------------------------*
+   2  *Core static model    2015/12/9   ¶ÔÉú²úº¯Êý/Ïû·ÑºÍÍ¶×Ê½á¹¹×öÁËÖØÐÂµÄµ÷Õû
+   3  *12/15 µçÁ¦ÐÐÒµµÄ½á¹¹È·¶¨Îª    s:0   a:10       b(a):1.5  »¯Ê¯ÄÜÔ´Ö®¼äÏÈÌæ
+      ´ú£¬ÔÚÓÚ·Ç»¯Ê¯ÄÜÔ´Ìæ´ú
+   4  *12/16   ÐÞ¸Ä½ø¿ÚÙ÷¸³µÄ¹æÄ£²ÎÊý£¬Xscale ±íÊ¾Ã³Ò×Æ½ºâµÄ±ä»¯£¬¶ø·Ç½ø¿Ú¹æÄ£
+   5  *É¾¼õ½ø³ö¿ÚºÍ°¢Ã÷¶Ù·½³Ì£¬Ä£ÐÍ¾¡¿ÉÄÜ¼ò»¯
+   6  *Ôö¼Ó¹æÄ£ÏµÊýA£¬½áºÏTFPÓÃÒÔ±íÊ¾È«ÒªËØÉú²úÂÊµÄ±ä»¯
+   7  *12/20   ÉèÖÃur.loÅÅ³ý=0µÄ¼ÆËã´íÎó   ¼ÙÉè´æÔÚ×ÔÈ»Ê§ÒµÂÊ×÷ÎªÊ§ÒµÂÊµÄ×îÐ¡Öµ£
+      ¬È¡ÖµÎªbur("b",lm)£¬À´Ô´ÓÚÊäÈëÊý¾Ý
+   8  *12/21   ÐÞÕýl-leµÄÌæ´úµ¯ÐÔ
+   9  *        Ôö¼ÓÏµÊýB£¬ÓÃÒÔÃèÊö×ÔÈ»Ê§ÒµÂÊµÄ±ä»¯
+  10  *12/25   ÐÞ¸ÄÉú²úº¯Êý½á¹¹£¬½«ÀÍ¶¯Á¦µÄÍ¶Èë·ÅÔÚÒ»Æð£¬¾ÛºÏºóÔÙÓëK»òE×éºÏ
+  11  *03/11   ÐÞ¸ÄTFPµÄ×÷ÓÃÎ»ÖÃ£¬Ìí¼Óbaseline calibrationÄ£¿é
+  12  *03/25   Îª¿ÉÔÙÉúÄÜÔ´Ôö¼ÓÄÚÉúË°ÂÊÒÔÍâÉúÏÞÖÆÆä·¢µçÁ¿
+  13  *03/27   ÔÚ²¹ÌùÄÚÉúµÄÇé¿öÏÂ£¬²»ÔÚ¿¼ÂÇ¹Ì¶¨ÒªËØ¶Ô¿ÉÔÙÉúÄÜÔ´Éú²úµÄÔ¼Êø£¬Ê¹ÓÃÄ
+      ÚÉúµÄ²¹Ìù/Ë°ÂÊ£¬Ô¼ÊøµçÁ¦µÄ²úÁ¿
+  14  *03/27   ¹Ì¶¨ÒªËØÏÞÖÆË®µçºÍºËµç£¬ºËµçË®µç»ðµç¹¹³Ébase¸ººÉ
+  15  *04/05   ÐÞ¸ÄÌ¼ÅÅ·ÅµÄÙ÷¸³£¬Í¨¹ý¸¨Öú±äÁ¿ÉèÖÃÌ¼Ç¿¶È¼õÅÅÄ¿±ê
+  16  *04/06   »Ø¸´·Ç»¯Ê¯µçÁ¦µÄ¹Ì¶¨ÒªËØÐèÇó£¬Ôö¼ÓTechnology-specific capital
+  17   
+  18  *----------------------------------------------*
+  19  parameter      A                      /1/         ;
+  20  parameter      B                      /1/         ;
+  21  parameter simu_s,tax_s;
+  22  *simu_s=1,GDPÄÚÉú£»simu_s=0£¬GDPÍâÉú£»
+  23  simu_s=1;
+  24  *tax_s=1,¿ÉÔÙÉúÄÜÔ´Ë°ÍâÉú£»tax_s=0£¬¿ÉÔÙÉúÄÜÔ´Ë°ÄÚÉú£»
+  25  tax_s=1;
+  26  gprod0=1;
+****       $140
+  27   
+      $Model:China3E
+       
+      $Sectors:
+      y(i)                   !activity level for domestic production
+      consum                 !activity level for aggregate consumption
+      invest                 !activity level for aggregate physical capital inve
+      stment
+      welf                   !activity level for aggregate welfare
+      yelec(sub_elec)        !Activity level for electricity production
+      *k_a                    !Activity level for capital allocation
+      *yist(sub_ist)         !Activity level for ist production
+      eb(bt)$active(bt)      !activity level for backstop technology
+       
+      $Commodities:
+      py(i)                  !domestic price inex for goods
+      pelec(sub_elec)        !domestic price inex for subelec
+      pl(lm)
+      pk                     !domestic price index for captial demand
+      *pk_s                   !domestic price index for captial supply
+      *pk_e(sub_elec)$(not TD(sub_elec))              !domestic price index for 
+      technology-specific captial
+      pffact(i)$x(i)         !domestic price index for fixed factors
+      pffelec(sub_elec)$ffelec0(sub_elec)                !domestic price index f
+      or fixed factors in electric sector
+      pcons                  !price index for aggregate consumption
+      pinv                   !price index for aggregate physical capital investm
+      ent
+      pu                     !price index for utility
+       
+      *pbf(sub_elec)          !basic factor for installed capacity
+       
+      pco2$clim
+      pco2_s(i)$clim_s(i)              !shadow value of cafbon
+      pco2_h$clim_h
+      PSO2$slim              !shadow value of sulfur
+       
+      $consumers:
+      ra                     !income level for representative agent
+       
+      $auxiliary:
+      sff(x)$ffact0(x)       !side constraint modelling supply of fixed factor
+      sffelec(sub_elec)$ffelec0(sub_elec)         !side constraint modelling sup
+      ply of fixed factors
+      ur(lm)$ur0(lm)                 !unemployment rate
+      rgdp                     !real gdp
+      gprod                    !productivity index
+      gprod2(lm)$ur0(lm)                    !productivity index
+      t_re(sub_elec)$ret0(sub_elec)               !ÄÚÉúµÄÄÜÔ´²¹Ìù
+      tclim$clim                     ! carbon limit
+       
+      *$prod:k_a   t:1
+      *        o:pk                                q:(sum(i,fact0("capital",i))-
+      fact0("capital","elecutil")+kelec0("T_D"))
+      *        o:pk_e(sub_elec)$(not TD(sub_elec)) q:(kelec0(sub_elec)*emkup(sub
+      _elec))
+      *        i:pk_s                              q:fact("capital")
+       
+       
+       
+      $prod:y(i)$elec(i)   s:0   a:10      b(a):100       c(b):enesta
+              o:py(i)                               q:output0(i)
+              i:pelec(sub_elec)$TD(sub_elec)        q:outputelec0(sub_elec)
+              i:pelec(sub_elec)$wse(sub_elec)       q:outputelec0(sub_elec)     
+          a:
+              i:pelec(sub_elec)$hnb(sub_elec)       q:outputelec0(sub_elec)     
+          b:
+              i:pelec(sub_elec)$ffe(sub_elec)       q:outputelec0(sub_elec)     
+          c:
+       
+      *       Production of T&D electricity
+      $prod:yelec(sub_elec)$TD(sub_elec) s:0       l(s):eslm("l") lh(l):eslm("lh
+      ") ll(l):eslm("ll")
+              o:pelec(sub_elec)        q:(outputelec0(sub_elec))              p:
+      (1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+              i:py(i)$(not e(i))       q:intelec0(i,sub_elec)
+              i:py(elec)               q:(intelec0(elec,sub_elec)*aeei("elecutil
+      "))
+              i:py(fe)                 q:(intelec0(fe,sub_elec)*aeei("elecutil")
+      )
+              i:pl(lm)$ll(lm)          q:laborelec0(sub_elec,lm)            P:wa
+      ge("0.11",lm)        ll:
+              i:pl(lm)$hl(lm)          q:laborelec0(sub_elec,lm)            P:wa
+      ge("0.11",lm)        lh:
+              i:pk                     q:kelec0(sub_elec)
+       
+      *       Production of fossile fuel electricity
+      *sub_sector Í¶ÈëµÄÌæ´úµ¯ÐÔÓ¦¸ÃÐ¡ÓÚÔ­sector
+      $prod:yelec(sub_elec)$ffe(sub_elec) s:0   kle(s):0.84 l(kle):eslm("l") lh(
+      l):eslm("lh") ll(l):eslm("ll") ke(kle):0.5  ene(ke):sigma("ene_p") roil(en
+      e):0 coal(ene):0 gas(ene):0
+      *        o:pelec(sub_elec)        Q:outputelec0(sub_elec)           a:ra  
+      N:t_re(sub_elec)
+              o:pelec(sub_elec)        q:(outputelec0(sub_elec))                
+       p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+              i:PSO2$slim              Q:emission0("so2","e","process",sub_elec)
+              P:1e-5
+              i:py(i)$(not e(i))       q:(intelec0(i,sub_elec)*emkup(sub_elec))
+              i:py(elec)               q:(intelec0(elec,sub_elec)*aeei("elecutil
+      ")*emkup(sub_elec))
+              i:pl(lm)$ll(lm)          q:(laborelec0(sub_elec,lm)*emkup(sub_elec
+      ))               P:wage("0.11",lm)   ll:
+              i:pl(lm)$hl(lm)          q:(laborelec0(sub_elec,lm)*emkup(sub_elec
+      ))               P:wage("0.11",lm)   lh:
+              i:pk                     q:(kelec0(sub_elec)*emkup(sub_elec))     
+                          ke:
+              i:py(fe)$intelec0(fe,sub_elec)    q:(intelec0(fe,sub_elec)*aeei("e
+      lecutil")*emkup(sub_elec))                            fe.tl:
+              i:pco2#(fe)$clim         q:(emission0("co2","e",fe,sub_elec)*emkup
+      (sub_elec))      p:1e-5             fe.tl:
+              i:pco2_s("elecutil")#(fe)$clim_s("elecutil")         q:(emission0(
+      "co2","e",fe,sub_elec)*emkup(sub_elec))      p:1e-5             fe.tl:
+              I:PSO2#(fe)$slim         Q:(emission0("so2","e",fe,sub_elec)*emkup
+      (sub_elec))      P:1e-5         fe.tl:
+       
+       
+      *       Production of hybro and nuclear biomass electricity      va2 from 
+      wang ke
+      $prod:yelec(sub_elec)$hnb(sub_elec)  s:esub("elecutil","ff") a:0 va(a):esu
+      b("elecutil","kl") l(va):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll")
+              o:pelec(sub_elec)        q:outputelec0(sub_elec)              a:ra
+        N:t_re(sub_elec)
+      *        o:pelec(sub_elec)       q:(outputelec0(sub_elec))                
+       p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+              i:py(i)                  q:(intelec0(i,sub_elec)*emkup(sub_elec)) 
+                                                   a:
+              i:pl(lm)$ll(lm)          q:(laborelec0(sub_elec,lm)*emkup(sub_elec
+      ))              P:wage("0.11",lm)            ll:
+              i:pl(lm)$hl(lm)          q:(laborelec0(sub_elec,lm)*emkup(sub_elec
+      ))              P:wage("0.11",lm)            lh:
+              i:pk                     q:(kelec0(sub_elec)*emkup(sub_elec))     
+                                                   va:
+              i:pffelec(sub_elec)$ffelec0(sub_elec)                q:(ffelec0(su
+      b_elec)*emkup(sub_elec))      P:1
+       
+      *       Production of wind, solar  electricity      va2 from wang ke
+      $prod:yelec(sub_elec)$wse(sub_elec) s:esub("elecutil","ff") b:0 va(b):esub
+      ("elecutil","kl") l(va):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll")
+              o:pelec(sub_elec)        q:(outputelec0(sub_elec))                
+         a:ra  N:t_re(sub_elec)
+      *        o:pelec(sub_elec)       q:(outputelec0(sub_elec))                
+       p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+              i:py(i)                  q:(intelec0(i,sub_elec)*emkup(sub_elec)) 
+                                                   b:
+              i:pl(lm)$ll(lm)          q:(laborelec0(sub_elec,lm)*emkup(sub_elec
+      ))              P:wage("0.11",lm)            ll:
+              i:pl(lm)$hl(lm)          q:(laborelec0(sub_elec,lm)*emkup(sub_elec
+      ))              P:wage("0.11",lm)            lh:
+              i:pk                     q:(kelec0(sub_elec)*emkup(sub_elec))     
+                                                   va:
+              i:pffelec(sub_elec)$ffelec0(sub_elec)                q:(ffelec0(su
+      b_elec)*emkup(sub_elec))      P:1
+       
+       
+      $prod:y(i)$(not fe(i) and not elec(i) ) s:0 a:esub(i,"ff") b(a):0  kle(b):
+      0.84 l(kle):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll") ke(kle):0.5 e(ke):
+      sigma("ele_p") ne(e):sigma("ene_p")  coal(ne):0 roil(ne):0 gas(ne):0
+              o:py(i)                  q:(output0(i))                    p:(1-tx
+      0(i))     a:ra    t:tx0(i)
+              I:PSO2$slim              Q:emission0("so2","e","process",i)       
+       P:1e-5
+              i:py(j)$(not e(j))       q:int0(j,i)                              
+                 b:
+              i:pk                     q:fact0("capital",i)                     
+               ke:
+              i:pl(lm)$ll(lm)          q:labor0(i,lm)             P:wage("0.11",
+      lm)             ll:
+              i:pl(lm)$hl(lm)          q:labor0(i,lm)             P:wage("0.11",
+      lm)             lh:
+              i:pffact(i)$ffact0(i)    q:ffact0(i)                              
+                   a:
+              i:py(elec)               q:(int0(elec,i)*aeei(i))                 
+               e:
+              i:py(fe)                 q:(int0(fe,i)*aeei(i))                   
+               fe.tl:
+              i:pco2#(fe)$clim         q:emission0("co2","e",fe,i)      p:1e-5  
+                 fe.tl:
+              i:pco2_s(i)#(fe)$clim_s(i)         q:emission0("co2","e",fe,i)    
+        p:1e-5             fe.tl:
+              I:PSO2#(fe)$slim         Q:emission0("so2","e",fe,i)      P:1e-5  
+                  fe.tl:
+       
+       
+      *       Production of fossil fuel production       va from wang ke
+      $prod:y(i)$fe(i) s:0 a:esub(i,"ff") b(a):0 va(b):esub(i,"kl") l(va):eslm("
+      l") lh(l):eslm("lh") ll(l):eslm("ll")
+              o:py(i)                  q:(output0(i))                    p:(1-tx
+      0(i))     a:ra    t:tx0(i)
+              I:PSO2$slim              Q:emission0("so2","e","process",i)       
+       P:1e-5
+              i:py(j)                  q:int0(j,i)                              
+             b:
+              i:pk                     q:fact0("capital",i)            va:
+              i:pl(lm)$ll(lm)          q:labor0(i,lm)        P:wage("0.11",lm)  
+              ll:
+              i:pl(lm)$hl(lm)          q:labor0(i,lm)        P:wage("0.11",lm)  
+              lh:
+              i:pffact(i)$ffact0(i)    q:ffact0(i)                              
+              a:
+       
+       
+      *        consumption of goods and factors    ½á¹¹²ÎÕÕEPPA
+       
+      $prod:consum   s:esub_c  a:0.3 e:sigma("ene_fd") roil(e):0 coal(e):0 gas(e
+      ):0
+               o:pcons                  q:(sum(i,cons0(i))+sum(f,consf0(f)))
+               i:py(i)$(not fe(i))      q:(cons0(i)*aeei("fd"))                 
+      a:$(not elec(i))    e:$elec(i)
+               i:py(fe)                 q:(cons0(fe)*aeei("fd"))                
+       fe.tl:
+               i:pco2#(fe)$clim         q:emission0("co2","e",fe,"household")   
+         p:1e-5             fe.tl:
+               i:pco2_h#(fe)$clim_h     q:emission0("co2","e",fe,"household")   
+         p:1e-5           fe.tl:
+               I:PSO2#(fe)$slim         Q:emission0("so2","e",fe,"household")   
+         P:1e-5         fe.tl:
+       
+       
+      *        aggregate capital investment
+       
+      $prod:invest   s:esub_inv
+               o:pinv             q:(sum(i,inv0(i)))
+               i:py(i)            q:inv0(i)
+       
+       
+       
+      *        welfare          Íõ¿Ë EPPA S£ºÈ¡Öµ¶¼Îª1
+       
+      $prod:welf    s:1.0
+               o:pu                 q:(sum(i,cons0(i)+inv0(i))+sum(f,consf0(f)+i
+      nvf0(f)))
+               i:pcons              q:(sum(i,cons0(i))+sum(f,consf0(f)))
+               i:pinv               q:(sum(i,inv0(i))+sum(f,invf0(f)))
+       
+       
+      $demand:ra
+       
+      *demand for consumption,invest and rd
+       
+      d:pu                 q:(sum(i,cons0(i)+inv0(i))+sum(f,consf0(f)+invf0(f)))
+       
+      *endowment of factor supplies
+       
+      e:pk                 q:fact("capital")                                    
+           r:gprod
+      e:pl(lm)             q:(tlabor_s0(lm))                                    
+           r:gprod
+      e:pl(lm)$ur0(lm)     q:((-tlabor_s0(lm)))                                 
+           r:gprod2(lm)
+       
+      e:pffact(x)          q:ffact0(x)                 r:sff(x)$ffact0(x)
+      e:pffelec(sub_elec)$ffelec0(sub_elec)           q:(ffelec0(sub_elec)*emkup
+      (sub_elec))         r:sffelec(sub_elec)
+       
+      *exogenous endowment of net exports(include variances)
+       
+      e:py(i)              q:(-(nx0(i)+xinv0(i)+xcons0(i))*xscale)
+       
+      *endowment of carbon emission allowances
+       
+      e:pco2$clim         q:1                        r:tclim
+      e:pco2_s(i)$clim_s(i)    q:clim_s(i)
+      e:pco2_h$clim_h      q:clim_h
+      e:pso2$slim          q:slim
+       
+      *supplement benchmark fixed-factor endowments according to assumed price e
+      lasticities of resource supply
+       
+      $constraint:sff(x)$ffact0(x)
+           sff(x)    =e= (py(x)/pu)**eta(x);
+       
+      $constraint:sffelec(sub_elec)$ffelec0(sub_elec)
+               sffelec(sub_elec) =e=  (py("elecutil")/pu)**eta(sub_elec);
+       
+      *»ù×¼Çé¾°£¬Ë°/²¹ÌùÍâÉú
+      $constraint:t_re(sub_elec)$(ret0(sub_elec) and tax_s eq 1)
+              t_re(sub_elec) =e=taxelec0(sub_elec);
+       
+       
+      *Õþ²ßÇé¾°£¬Ë°/²¹ÌùÄÚÉú
+      $constraint:t_re(sub_elec)$(ret0(sub_elec) and tax_s ne 1)
+              yelec(sub_elec) =e=ret0(sub_elec);
+       
+      $constraint:ur(lm)$ur0(lm)
+            (Pl(lm)/pu)/(wage("0.11",lm)/pu) =E=(ur(lm)/ur0(lm))**(-0.1);
+      *     ur0(lm)*(Pl(lm)/wage("0.11",lm))**(-1/10) =e=ur(lm);
+       
+      $constraint:gprod2(lm)$(ur0(lm) and simu_s ne 0)
+        gprod2(lm) =e= gprod0*ur(lm);
+       
+      $constraint:gprod2(lm)$(ur0(lm) and simu_s eq 0)
+       gprod2(lm) =e= gprod*ur(lm);
+       
+      $constraint:rgdp
+        pu*rgdp =e= pcons*(sum(i,cons0(i))+sum(f,consf0(f)))*consum+pinv*(sum(i,
+      inv0(i)))*invest+sum(i,py(i)*((nx0(i)+xinv0(i)+xcons0(i))*xscale))   ;
+       
+      $constraint:gprod$(simu_s eq 0)
+        rgdp =e= rgdp0;
+       
+      $constraint:gprod$(simu_s ne 0)
+        gprod =e= gprod0;
+       
+      $constraint:tclim$clim
+         tclim =e= clim0*temission2("co2");
+      *  tclim =e= clim0*temission2("co2")/rgdp0*rgdp;
+       
+      $report:
+       
+      v:qdout(j)             o:py(j)       prod:y(j)     !output by sector(domes
+      tic market)
+       
+      v:qc(i)                i:py(i)       prod:consum   !consumpiton of final c
+      ommodities
+      v:grosscons            o:pcons       prod:consum   !aggregate consumpiton
+       
+      v:qinvk(i)             i:py(i)       prod:invest   !physical capital inves
+      tment by non-energy sectors
+      v:grossinvk            o:pinv        prod:invest   !aggregate physical cap
+      ital investment
+       
+       
+      v:util                 o:pu          prod:welf       !welf
+       
+      v:qin(i,j)             i:py(i)       prod:y(j)      !inputs of intermediat
+      e goods
+      v:qin_ele(i,sub_elec)  i:py(i)       prod:yelec(sub_elec)      !inputs of 
+      intermediate goods to fossil fuel fired generation
+       
+      v:qkin(j)              i:pk          prod:y(j)        !capital inputs
+      *v:qkein(sub_elec)$(not TD(sub_elec))                o:pk_e(sub_elec)     
+         prod:yelec(sub_elec)   !capital inputs
+      *v:qkt                  i:pk_s        prod:k_a         !capital supply
+      *v:qk                   o:pk          prod:k_a        !capital inputs
+      *v:qke(sub_elec)$(not TD(sub_elec))                o:pk_e(sub_elec)       
+       prod:k_a        !capital inputs
+       
+      v:qlin(lm,j)           i:pl(lm)      prod:y(j)        !labor inputs
+      v:qlin_ele(lm,sub_elec)      i:pl(lm)      prod:yelec(sub_elec)        !la
+      bor inputs
+      v:qkin_ele(sub_elec)   i:pk          prod:yelec(sub_elec)        !capital 
+      inputs
+      v:qffin(j)$x(j)        i:pffact(j)   prod:y(j)        !fixed factor inputs
+       
+      v:qffelec(sub_elec)$ffelec0(sub_elec)    i:pffelec(sub_elec)     prod:yele
+      c(sub_elec)      !fixed factor inputs
+       
+      V:qelec1(sub_elec)$(not hnb(sub_elec))        o:pelec(sub_elec)       prod
+      :yelec(sub_elec)
+      V:qelec2(sub_elec)$(hnb(sub_elec))            o:pelec(sub_elec)           
+          prod:yelec(sub_elec)
+       
+      v:ECO2(i)              i:pco2         prod:y(i)
+      v:ECO2_s(i)              i:pco2_s(i)        prod:y(i)
+      v:ECO2_se(sub_elec)              i:pco2_s("elecutil")        prod:yelec(su
+      b_elec)
+      v:eco2_h                i:pco2_h        prod:consum
+      v:EsO2(i)              i:pso2        prod:y(i)
+      v:EHsO2                i:pso2        prod:consum
+SYSINCLUDE D:\GAMS\win32\24.4\mpsgeset
+INCLUDE    E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test model - V12- Sue 
+           Wing\225a\gamsgeh.dat
+ 330  Y(I)    activity level for domestic production
+****    $120
+**** LINE     16 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 334  YELEC(SUB_ELEC)    Activity level for electricity production
+****               $120
+**** LINE     20 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 335  EB(BT)    activity level for backstop technology
+****      $120
+**** LINE     21 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 338  PL(LM)
+****      $120
+**** LINE     24 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 350  SFF(X)    side constraint modelling supply of fixed factor
+****      $120
+**** LINE     36 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 358  QDOUT(J)
+****        $120
+**** LINE     44 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 388  +SUM((BT)$(ACTIVE(BT)),EB(BT))
+****                  $140
+**** LINE     74 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 394  +SUM((SUB_ELEC)$(FFELEC0(SUB_ELEC)),PFFELEC(SUB_ELEC))
+****                         $140
+**** LINE     80 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 398  +PCO2$(CLIM)
+****            $140
+**** LINE     84 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 399  +SUM((I)$(CLIM_S(I)),PCO2_S(I))
+****                 $140
+**** LINE     85 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 400  +PCO2_H$(CLIM_H)
+****                $140
+**** LINE     86 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 401  +PSO2$(SLIM)
+****            $140
+**** LINE     87 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 403  +SUM((X)$(FFACT0(X)),SFF(X))
+****                 $140
+**** LINE     89 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 405  +SUM((LM)$(UR0(LM)),UR(LM))
+****               $140
+**** LINE     91 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 409  +SUM((SUB_ELEC)$(RET0(SUB_ELEC)),T_RE(SUB_ELEC))
+****                      $140
+**** LINE     95 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 425  +SUM((SUB_ELEC)$(((NOT HNB(SUB_ELEC)))$(MPSREPORT)),QELEC1(SUB_ELEC))
+****                           $140
+**** LINE    111 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 469       SFF(X)    =E= (PY(X)/PU)**ETA(X);
+****                          $171     $140
+**** LINE    155 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 474           SFFELEC(SUB_ELEC) =E=  (PY("ELECUTIL")/PU)**ETA(SUB_ELEC);
+****                                               $353
+**** LINE    160 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 479          T_RE(SUB_ELEC) =E=TAXELEC0(SUB_ELEC);
+****                                   $140
+**** LINE    165 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 489        (PL(LM)/PU)/(WAGE("0.11",LM)/PU) =E=(UR(LM)/UR0(LM))**(-0.1);
+****                        $140
+**** LINE    175 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 504    PU*RGDP =E= PCONS*(SUM(I,CONS0(I))+SUM(F,CONSF0(F)))*CONSUM+PINV*(SUM(I,
+****                                 $140      $120,340,140                     
+      INV0(I)))*INVEST+SUM(I,PY(I)*((NX0(I)+XINV0(I)+XCONS0(I))*XSCALE))   ;
+         $140                          $140     $140      $140       $140
+**** LINE    190 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 509    RGDP =E= RGDP0;
+****                 $140
+**** LINE    195 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+ 519     TCLIM =E= CLIM0*TEMISSION2("CO2");
+****                   $140       $140
+**** LINE    205 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\225a\gamsgeh.dat
+**** LINE     20 SYSINCLUDE  D:\GAMS\win32\24.4\mpsgeset
+                             %1  China3E
+**** LINE    294 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+       
+      MPSGE PREPROCESSOR VERSION 12/95
+          1
+          2  $Sectors:
+          3  y(i)                   !activity level for domestic production
+          4  consum                 !activity level for aggregate consumption
+          5  invest                 !activity level for aggregate physical capit
+      al investment
+          6  welf                   !activity level for aggregate welfare
+          7  yelec(sub_elec)        !Activity level for electricity production
+          8  *k_a                    !Activity level for capital allocation
+          9  *yist(sub_ist)         !Activity level for ist production
+         10  eb(bt)$active(bt)      !activity level for backstop technology
+         11
+         12  $Commodities:
+         13  py(i)                  !domestic price inex for goods
+         14  pelec(sub_elec)        !domestic price inex for subelec
+         15  pl(lm)
+         16  pk                     !domestic price index for captial demand
+         17  *pk_s                   !domestic price index for captial supply
+         18  *pk_e(sub_elec)$(not TD(sub_elec))              !domestic price ind
+      ex for technology-specific captial
+         19  pffact(i)$x(i)         !domestic price index for fixed factors
+         20  pffelec(sub_elec)$ffelec0(sub_elec)                !domestic price 
+      index for fixed factors in electric sector
+         21  pcons                  !price index for aggregate consumption
+         22  pinv                   !price index for aggregate physical capital 
+      investment
+         23  pu                     !price index for utility
+         24
+         25  *pbf(sub_elec)          !basic factor for installed capacity
+         26
+         27  pco2$clim
+         28  pco2_s(i)$clim_s(i)              !shadow value of cafbon
+         29  pco2_h$clim_h
+         30  PSO2$slim              !shadow value of sulfur
+         31
+         32  $consumers:
+         33  ra                     !income level for representative agent
+         34
+         35  $auxiliary:
+         36  sff(x)$ffact0(x)       !side constraint modelling supply of fixed f
+      actor
+         37  sffelec(sub_elec)$ffelec0(sub_elec)         !side constraint modell
+      ing supply of fixed factors
+         38  ur(lm)$ur0(lm)                 !unemployment rate
+         39  rgdp                     !real gdp
+         40  gprod                    !productivity index
+         41  gprod2(lm)$ur0(lm)                    !productivity index
+         42  t_re(sub_elec)$ret0(sub_elec)               !ÄÚÉúµÄÄÜÔ´²¹Ìù
+         43  tclim$clim                     ! carbon limit
+         44
+         45  *$prod:k_a   t:1
+         46  *        o:pk                                q:(sum(i,fact0("capita
+      l",i))-fact0("capital","elecutil")+kelec0("T_D"))
+         47  *        o:pk_e(sub_elec)$(not TD(sub_elec)) q:(kelec0(sub_elec)*em
+      kup(sub_elec))
+         48  *        i:pk_s                              q:fact("capital")
+         49
+         50
+         51
+         52  $prod:y(i)$elec(i)   s:0   a:10      b(a):100       c(b):enesta
+         53          o:py(i)                               q:output0(i)
+         54          i:pelec(sub_elec)$TD(sub_elec)        q:outputelec0(sub_ele
+      c)
+         55          i:pelec(sub_elec)$wse(sub_elec)       q:outputelec0(sub_ele
+      c)         a:
+         56          i:pelec(sub_elec)$hnb(sub_elec)       q:outputelec0(sub_ele
+      c)         b:
+         57          i:pelec(sub_elec)$ffe(sub_elec)       q:outputelec0(sub_ele
+      c)         c:
+         58
+         59  *       Production of T&D electricity
+         60  $prod:yelec(sub_elec)$TD(sub_elec) s:0       l(s):eslm("l") lh(l):e
+      slm("lh") ll(l):eslm("ll")
+         61          o:pelec(sub_elec)        q:(outputelec0(sub_elec))         
+           p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+         62          i:py(i)$(not e(i))       q:intelec0(i,sub_elec)
+         63          i:py(elec)               q:(intelec0(elec,sub_elec)*aeei("e
+      lecutil"))
+         64          i:py(fe)                 q:(intelec0(fe,sub_elec)*aeei("ele
+      cutil"))
+         65          i:pl(lm)$ll(lm)          q:laborelec0(sub_elec,lm)         
+         P:wage("0.11",lm)        ll:
+         66          i:pl(lm)$hl(lm)          q:laborelec0(sub_elec,lm)         
+         P:wage("0.11",lm)        lh:
+         67          i:pk                     q:kelec0(sub_elec)
+         68
+         69  *       Production of fossile fuel electricity
+         70  *sub_sector Í¶ÈëµÄÌæ´úµ¯ÐÔÓ¦¸ÃÐ¡ÓÚÔ­sector
+         71  $prod:yelec(sub_elec)$ffe(sub_elec) s:0   kle(s):0.84 l(kle):eslm("
+      l") lh(l):eslm("lh") ll(l):eslm("ll") ke(kle):0.5  ene(ke):sigma("ene_p") 
+      roil(ene):0 coal(ene):0 gas(ene):0
+         72  *        o:pelec(sub_elec)        Q:outputelec0(sub_elec)          
+       a:ra  N:t_re(sub_elec)
+         73          o:pelec(sub_elec)        q:(outputelec0(sub_elec))         
+              p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+         74          i:PSO2$slim              Q:emission0("so2","e","process",su
+      b_elec)        P:1e-5
+         75          i:py(i)$(not e(i))       q:(intelec0(i,sub_elec)*emkup(sub_
+      elec))
+         76          i:py(elec)               q:(intelec0(elec,sub_elec)*aeei("e
+      lecutil")*emkup(sub_elec))
+         77          i:pl(lm)$ll(lm)          q:(laborelec0(sub_elec,lm)*emkup(s
+      ub_elec))               P:wage("0.11",lm)   ll:
+         78          i:pl(lm)$hl(lm)          q:(laborelec0(sub_elec,lm)*emkup(s
+      ub_elec))               P:wage("0.11",lm)   lh:
+         79          i:pk                     q:(kelec0(sub_elec)*emkup(sub_elec
+      ))                         ke:
+         80          i:py(fe)$intelec0(fe,sub_elec)    q:(intelec0(fe,sub_elec)*
+      aeei("elecutil")*emkup(sub_elec))                            fe.tl:
+         81          i:pco2#(fe)$clim         q:(emission0("co2","e",fe,sub_elec
+      )*emkup(sub_elec))      p:1e-5             fe.tl:
+         82          i:pco2_s("elecutil")#(fe)$clim_s("elecutil")         q:(emi
+      ssion0("co2","e",fe,sub_elec)*emkup(sub_elec))      p:1e-5             fe.
+      tl:
+         83          I:PSO2#(fe)$slim         Q:(emission0("so2","e",fe,sub_elec
+      )*emkup(sub_elec))      P:1e-5         fe.tl:
+         84
+         85
+         86  *       Production of hybro and nuclear biomass electricity      va
+      2 from wang ke
+         87  $prod:yelec(sub_elec)$hnb(sub_elec)  s:esub("elecutil","ff") a:0 va
+      (a):esub("elecutil","kl") l(va):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll"
+      )
+         88          o:pelec(sub_elec)        q:outputelec0(sub_elec)           
+         a:ra  N:t_re(sub_elec)
+         89  *        o:pelec(sub_elec)       q:(outputelec0(sub_elec))         
+              p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+         90          i:py(i)                  q:(intelec0(i,sub_elec)*emkup(sub_
+      elec))                                              a:
+         91          i:pl(lm)$ll(lm)          q:(laborelec0(sub_elec,lm)*emkup(s
+      ub_elec))              P:wage("0.11",lm)            ll:
+         92          i:pl(lm)$hl(lm)          q:(laborelec0(sub_elec,lm)*emkup(s
+      ub_elec))              P:wage("0.11",lm)            lh:
+         93          i:pk                     q:(kelec0(sub_elec)*emkup(sub_elec
+      ))                                                  va:
+         94          i:pffelec(sub_elec)$ffelec0(sub_elec)                q:(ffe
+      lec0(sub_elec)*emkup(sub_elec))      P:1
+         95
+         96  *       Production of wind, solar  electricity      va2 from wang k
+      e
+         97  $prod:yelec(sub_elec)$wse(sub_elec) s:esub("elecutil","ff") b:0 va(
+      b):esub("elecutil","kl") l(va):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll")
+         98          o:pelec(sub_elec)        q:(outputelec0(sub_elec))         
+                a:ra  N:t_re(sub_elec)
+         99  *        o:pelec(sub_elec)       q:(outputelec0(sub_elec))         
+              p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+        100          i:py(i)                  q:(intelec0(i,sub_elec)*emkup(sub_
+      elec))                                              b:
+        101          i:pl(lm)$ll(lm)          q:(laborelec0(sub_elec,lm)*emkup(s
+      ub_elec))              P:wage("0.11",lm)            ll:
+        102          i:pl(lm)$hl(lm)          q:(laborelec0(sub_elec,lm)*emkup(s
+      ub_elec))              P:wage("0.11",lm)            lh:
+        103          i:pk                     q:(kelec0(sub_elec)*emkup(sub_elec
+      ))                                                  va:
+        104          i:pffelec(sub_elec)$ffelec0(sub_elec)                q:(ffe
+      lec0(sub_elec)*emkup(sub_elec))      P:1
+        105
+        106
+        107  $prod:y(i)$(not fe(i) and not elec(i) ) s:0 a:esub(i,"ff") b(a):0  
+      kle(b):0.84 l(kle):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll") ke(kle):0.5
+       e(ke):sigma("ele_p") ne(e):sigma("ene_p")  coal(ne):0 roil(ne):0 gas(ne):
+      0
+        108          o:py(i)                  q:(output0(i))                    
+      p:(1-tx0(i))     a:ra    t:tx0(i)
+        109          I:PSO2$slim              Q:emission0("so2","e","process",i)
+              P:1e-5
+        110          i:py(j)$(not e(j))       q:int0(j,i)                       
+                        b:
+        111          i:pk                     q:fact0("capital",i)              
+                      ke:
+        112          i:pl(lm)$ll(lm)          q:labor0(i,lm)             P:wage(
+      "0.11",lm)             ll:
+        113          i:pl(lm)$hl(lm)          q:labor0(i,lm)             P:wage(
+      "0.11",lm)             lh:
+        114          i:pffact(i)$ffact0(i)    q:ffact0(i)                       
+                          a:
+        115          i:py(elec)               q:(int0(elec,i)*aeei(i))          
+                      e:
+        116          i:py(fe)                 q:(int0(fe,i)*aeei(i))            
+                      fe.tl:
+        117          i:pco2#(fe)$clim         q:emission0("co2","e",fe,i)      p
+      :1e-5             fe.tl:
+        118          i:pco2_s(i)#(fe)$clim_s(i)         q:emission0("co2","e",fe
+      ,i)      p:1e-5             fe.tl:
+        119          I:PSO2#(fe)$slim         Q:emission0("so2","e",fe,i)      P
+      :1e-5              fe.tl:
+        120
+        121
+        122  *       Production of fossil fuel production       va from wang ke
+        123  $prod:y(i)$fe(i) s:0 a:esub(i,"ff") b(a):0 va(b):esub(i,"kl") l(va)
+      :eslm("l") lh(l):eslm("lh") ll(l):eslm("ll")
+        124          o:py(i)                  q:(output0(i))                    
+      p:(1-tx0(i))     a:ra    t:tx0(i)
+        125          I:PSO2$slim              Q:emission0("so2","e","process",i)
+              P:1e-5
+        126          i:py(j)                  q:int0(j,i)                       
+                    b:
+        127          i:pk                     q:fact0("capital",i)            va
+      :
+        128          i:pl(lm)$ll(lm)          q:labor0(i,lm)        P:wage("0.11
+      ",lm)          ll:
+        129          i:pl(lm)$hl(lm)          q:labor0(i,lm)        P:wage("0.11
+      ",lm)          lh:
+        130          i:pffact(i)$ffact0(i)    q:ffact0(i)                       
+                     a:
+        131
+        132
+        133  *        consumption of goods and factors    ½á¹¹²ÎÕÕEPPA
+        134
+        135  $prod:consum   s:esub_c  a:0.3 e:sigma("ene_fd") roil(e):0 coal(e):
+      0 gas(e):0
+        136           o:pcons                  q:(sum(i,cons0(i))+sum(f,consf0(f
+      )))
+        137           i:py(i)$(not fe(i))      q:(cons0(i)*aeei("fd"))          
+             a:$(not elec(i))    e:$elec(i)
+        138           i:py(fe)                 q:(cons0(fe)*aeei("fd"))         
+              fe.tl:
+        139           i:pco2#(fe)$clim         q:emission0("co2","e",fe,"househo
+      ld")      p:1e-5             fe.tl:
+        140           i:pco2_h#(fe)$clim_h     q:emission0("co2","e",fe,"househo
+      ld")      p:1e-5           fe.tl:
+        141           I:PSO2#(fe)$slim         Q:emission0("so2","e",fe,"househo
+      ld")      P:1e-5         fe.tl:
+        142
+        143
+        144  *        aggregate capital investment
+        145
+        146  $prod:invest   s:esub_inv
+        147           o:pinv             q:(sum(i,inv0(i)))
+        148           i:py(i)            q:inv0(i)
+        149
+        150
+        151
+        152  *        welfare          Íõ¿Ë EPPA S£ºÈ¡Öµ¶¼Îª1
+        153
+        154  $prod:welf    s:1.0
+        155           o:pu                 q:(sum(i,cons0(i)+inv0(i))+sum(f,cons
+      f0(f)+invf0(f)))
+        156           i:pcons              q:(sum(i,cons0(i))+sum(f,consf0(f)))
+        157           i:pinv               q:(sum(i,inv0(i))+sum(f,invf0(f)))
+        158
+        159
+        160  $demand:ra
+        161
+        162  *demand for consumption,invest and rd
+        163
+        164  d:pu                 q:(sum(i,cons0(i)+inv0(i))+sum(f,consf0(f)+inv
+      f0(f)))
+        165
+        166  *endowment of factor supplies
+        167
+        168  e:pk                 q:fact("capital")                             
+                  r:gprod
+        169  e:pl(lm)             q:(tlabor_s0(lm))                             
+                  r:gprod
+        170  e:pl(lm)$ur0(lm)     q:((-tlabor_s0(lm)))                          
+                  r:gprod2(lm)
+        171
+        172  e:pffact(x)          q:ffact0(x)                 r:sff(x)$ffact0(x)
+        173  e:pffelec(sub_elec)$ffelec0(sub_elec)           q:(ffelec0(sub_elec
+      )*emkup(sub_elec))         r:sffelec(sub_elec)
+        174
+        175  *exogenous endowment of net exports(include variances)
+        176
+        177  e:py(i)              q:(-(nx0(i)+xinv0(i)+xcons0(i))*xscale)
+        178
+        179  *endowment of carbon emission allowances
+        180
+        181  e:pco2$clim         q:1                        r:tclim
+        182  e:pco2_s(i)$clim_s(i)    q:clim_s(i)
+        183  e:pco2_h$clim_h      q:clim_h
+        184  e:pso2$slim          q:slim
+        185
+        186  *supplement benchmark fixed-factor endowments according to assumed 
+      price elasticities of resource supply
+        187
+        188  $constraint:sff(x)$ffact0(x)
+        189       sff(x)    =e= (py(x)/pu)**eta(x);
+        190
+        191  $constraint:sffelec(sub_elec)$ffelec0(sub_elec)
+        192           sffelec(sub_elec) =e=  (py("elecutil")/pu)**eta(sub_elec);
+        193
+        194  *»ù×¼Çé¾°£¬Ë°/²¹ÌùÍâÉú
+        195  $constraint:t_re(sub_elec)$(ret0(sub_elec) and tax_s eq 1)
+        196          t_re(sub_elec) =e=taxelec0(sub_elec);
+        197
+        198
+        199  *Õþ²ßÇé¾°£¬Ë°/²¹ÌùÄÚÉú
+        200  $constraint:t_re(sub_elec)$(ret0(sub_elec) and tax_s ne 1)
+        201          yelec(sub_elec) =e=ret0(sub_elec);
+        202
+        203  $constraint:ur(lm)$ur0(lm)
+        204        (Pl(lm)/pu)/(wage("0.11",lm)/pu) =E=(ur(lm)/ur0(lm))**(-0.1);
+        205  *     ur0(lm)*(Pl(lm)/wage("0.11",lm))**(-1/10) =e=ur(lm);
+        206
+        207  $constraint:gprod2(lm)$(ur0(lm) and simu_s ne 0)
+        208    gprod2(lm) =e= gprod0*ur(lm);
+        209
+        210  $constraint:gprod2(lm)$(ur0(lm) and simu_s eq 0)
+        211   gprod2(lm) =e= gprod*ur(lm);
+        212
+        213  $constraint:rgdp
+        214    pu*rgdp =e= pcons*(sum(i,cons0(i))+sum(f,consf0(f)))*consum+pinv*
+      (sum(i,inv0(i)))*invest+sum(i,py(i)*((nx0(i)+xinv0(i)+xcons0(i))*xscale)) 
+        ;
+        215
+        216  $constraint:gprod$(simu_s eq 0)
+        217    rgdp =e= rgdp0;
+        218
+        219  $constraint:gprod$(simu_s ne 0)
+        220    gprod =e= gprod0;
+        221
+        222  $constraint:tclim$clim
+        223     tclim =e= clim0*temission2("co2");
+        224  *  tclim =e= clim0*temission2("co2")/rgdp0*rgdp;
+        225
+        226  $report:
+        227
+        228  v:qdout(j)             o:py(j)       prod:y(j)     !output by secto
+      r(domestic market)
+        229
+        230  v:qc(i)                i:py(i)       prod:consum   !consumpiton of 
+      final commodities
+        231  v:grosscons            o:pcons       prod:consum   !aggregate consu
+      mpiton
+        232
+        233  v:qinvk(i)             i:py(i)       prod:invest   !physical capita
+      l investment by non-energy sectors
+        234  v:grossinvk            o:pinv        prod:invest   !aggregate physi
+      cal capital investment
+        235
+        236
+        237  v:util                 o:pu          prod:welf       !welf
+        238
+        239  v:qin(i,j)             i:py(i)       prod:y(j)      !inputs of inte
+      rmediate goods
+        240  v:qin_ele(i,sub_elec)  i:py(i)       prod:yelec(sub_elec)      !inp
+      uts of intermediate goods to fossil fuel fired generation
+        241
+        242  v:qkin(j)              i:pk          prod:y(j)        !capital inpu
+      ts
+        243  *v:qkein(sub_elec)$(not TD(sub_elec))                o:pk_e(sub_ele
+      c)        prod:yelec(sub_elec)   !capital inputs
+        244  *v:qkt                  i:pk_s        prod:k_a         !capital sup
+      ply
+        245  *v:qk                   o:pk          prod:k_a        !capital inpu
+      ts
+        246  *v:qke(sub_elec)$(not TD(sub_elec))                o:pk_e(sub_elec)
+              prod:k_a        !capital inputs
+        247
+        248  v:qlin(lm,j)           i:pl(lm)      prod:y(j)        !labor inputs
+        249  v:qlin_ele(lm,sub_elec)      i:pl(lm)      prod:yelec(sub_elec)    
+          !labor inputs
+        250  v:qkin_ele(sub_elec)   i:pk          prod:yelec(sub_elec)        !c
+      apital inputs
+        251  v:qffin(j)$x(j)        i:pffact(j)   prod:y(j)        !fixed factor
+       inputs
+        252
+        253  v:qffelec(sub_elec)$ffelec0(sub_elec)    i:pffelec(sub_elec)     pr
+      od:yelec(sub_elec)      !fixed factor inputs
+        254
+        255  V:qelec1(sub_elec)$(not hnb(sub_elec))        o:pelec(sub_elec)    
+         prod:yelec(sub_elec)
+        256  V:qelec2(sub_elec)$(hnb(sub_elec))            o:pelec(sub_elec)    
+                 prod:yelec(sub_elec)
+        257
+        258  v:ECO2(i)              i:pco2         prod:y(i)
+        259  v:ECO2_s(i)              i:pco2_s(i)        prod:y(i)
+        260  v:ECO2_se(sub_elec)              i:pco2_s("elecutil")        prod:y
+      elec(sub_elec)
+        261  v:eco2_h                i:pco2_h        prod:consum
+        262  v:EsO2(i)              i:pso2        prod:y(i)
+        263  v:EHsO2                i:pso2        prod:consum
+        264  $offtext
+       
+       
+      Symbol Listing
+       
+      Note:   Parameter and set references appearing within
+              parentheses are not identified by the preprocessor.
+       
+      Symbol      Type       References
+      ==========  =====      ==================================================
+      "0.11"      SET            65   66   77   78   91   92  101  102  112  113
+                                128  129
+      "CAPITAL"   SET           111  127  168
+      "CO2"       SET           117  118  139  140
+      "E"         SET            74  109  117  118  119  125  139  140  141
+      "ELECUTIL"  SET            82   87   87   97   97  260
+      "ELE_P"     SET           107
+      "ENE_FD"    SET           135
+      "ENE_P"     SET            71  107
+      "FF"        SET            87   97  107  123
+      "HOUSEHOLD  SET           139  140  141
+      "KL"        SET            87   97  123
+      "L"         SET            60   71   87   97  107  123
+      "LH"        SET            60   71   87   97  107  123
+      "LL"        SET            60   71   87   97  107  123
+      "PROCESS"   SET            74  109  125
+      "SO2"       SET            74  109  119  125  141
+      BT          SET            10
+      CLIM_H      PARAM         183
+      CLIM_S      PARAM         182
+      CONSUM      ACTIV           4  135  230  231  261  263
+      EB          ACTIV          10
+      ECO2        REPRT         258
+      ECO2_H      REPRT         261
+      ECO2_S      REPRT         259
+      ECO2_SE     REPRT         260
+      EHSO2       REPRT         263
+      ELEC        SET            63   76  115
+      EMISSION0   PARAM          74  109  117  118  119  125  139  140  141
+      ENESTA      PARAM          52
+      ESLM        PARAM          60   60   60   71   71   71   87   87   87   97
+                                 97   97  107  107  107  123  123  123
+      ESO2        REPRT         262
+      ESUB        PARAM          87   87   97   97  107  123  123
+      ESUB_C      PARAM         135
+      ESUB_INV    PARAM         146
+      FACT        PARAM         168
+      FACT0       PARAM         111  127
+      FE          SET            64   80  116  117  118  119  138  139  140  141
+      FFACT0      PARAM         114  130  172
+      GPROD       AUXIL          40  168  169
+      GPROD2      AUXIL          41  170
+      GROSSCONS   REPRT         231
+      GROSSINVK   REPRT         234
+      I           SET             3   52   53   53   62   62   75   90  100  107
+                                107  108  108  109  110  111  112  113  114  114
+                                117  118  118  119  123  123  123  124  124  125
+                                126  127  128  129  130  130  137  148  148  177
+                                182  182  230  230  233  233  239  239  240  240
+                                258  258  259  259  259  262  262
+      INT0        PARAM         110  126
+      INTELEC0    PARAM          62
+      INV0        PARAM         148
+      INVEST      ACTIV           5  146  233  234
+      J           SET           110  110  126  126  228  228  228  239  239  242
+                                242  248  248  251  251  251
+      KELEC0      PARAM          67
+      LABOR0      PARAM         112  113  128  129
+      LABORELEC0  PARAM          65   66
+      LM          SET            15   65   65   65   66   66   66   77   77   78
+                                 78   91   91   92   92  101  101  102  102  112
+                                112  112  113  113  113  128  128  128  129  129
+                                129  169  170  170  248  248  249  249
+      OUTPUT0     PARAM          53
+      OUTPUTELEC  PARAM          54   55   56   57   88
+      PCO2        PRICE          27   81  117  139  181  258
+      PCO2_H      PRICE          29  140  183  261
+      PCO2_S      PRICE          28   82  118  182  259  260
+      PCONS       PRICE          21  136  156  231
+      PELEC       PRICE          14   54   55   56   57   61   73   88   98  255
+                                256
+      PFFACT      PRICE          19  114  130  172  251
+      PFFELEC     PRICE          20   94  104  173  253
+      PINV        PRICE          22  147  157  234
+      PK          PRICE          16   67   79   93  103  111  127  168  242  250
+      PL          PRICE          15   65   66   77   78   91   92  101  102  112
+                                113  128  129  169  170  248  249
+      PSO2        PRICE          30   74   83  109  119  125  141  184  262  263
+      PU          PRICE          23  155  164  237
+      PY          PRICE          13   53   62   63   64   75   76   80   90  100
+                                108  110  115  116  124  126  137  138  148  177
+                                228  230  233  239  240
+      QC          REPRT         230
+      QDOUT       REPRT         228
+      QELEC1      REPRT         255
+      QELEC2      REPRT         256
+      QFFELEC     REPRT         253
+      QFFIN       REPRT         251
+      QIN         REPRT         239
+      QINVK       REPRT         233
+      QIN_ELE     REPRT         240
+      QKIN        REPRT         242
+      QKIN_ELE    REPRT         250
+      QLIN        REPRT         248
+      QLIN_ELE    REPRT         249
+      RA          CONSU          33   61   73   88   98  108  124  160
+      RGDP        AUXIL          39
+      SFF         AUXIL          36  172
+      SFFELEC     AUXIL          37  173
+      SIGMA       PARAM          71  107  107  135
+      SLIM        PARAM         184
+      SUB_ELEC    SET             7   54   54   55   55   56   56   57   57   60
+                                 61   61   62   65   66   67   71   73   73   74
+                                 87   88   88   88   94   97   98   98  104  173
+                                173  240  240  249  249  250  250  253  253  253
+                                255  255  255  256  256  256  260  260
+      TAXELEC0    PARAM          61   73
+      TCLIM       AUXIL          43  181
+      TX0         PARAM         108  124
+      T_RE        AUXIL          42   88   98
+      UR          AUXIL          38
+      UTIL        REPRT         237
+      WAGE        PARAM          65   66   77   78   91   92  101  102  112  113
+                                128  129
+      WELF        ACTIV           6  154  237
+      X           SET            36  172  172  172
+      Y           ACTIV           3   52  107  123  228  239  242  248  251  258
+                                259  262
+      YELEC       ACTIV           7   60   71   87   97  240  249  250  253  255
+                                256  260
+       
+ 937   
+ 940  CHINA3E.INTEGER1=1;
+EXIT D:\GAMS\win32\24.4\mpsgeset
+ 943   
+ 944  *carbon has zero price in the benchmark
+ 945   
+ 946  *initialize constraints
+ 947   
+ 948  sff.l(x)$ffact0(x)  =1;
+ 949  pu.fx=1;
+ 950  ur.l(lm)=ur0(lm);
+ 951  ur.lo(lm)=B*ur0(lm);
+ 952  ur.lo(lm)=0.0000001;
+ 953  t_re.l(sub_elec)$ret0(sub_elec)=taxelec0(sub_elec);
+ 954  t_re.lo(sub_elec)$ret0(sub_elec)=-inf;
+ 955  gprod.l=1;
+ 956  gprod.lo=0;
+ 957   
+ 958  tclim.l=temission2("co2");
+ 959  clim=1;
+ 960  clim0=0.5;
+ 961   
+ 962   
+ 963  *ur0(lm)=0;
+ 964  *clim_s("construction")=0.5*Temission0('co2',"construction");
+ 965  *clim_s("transport")=1*Temission0('co2',"transport");
+ 966  *clim_s("EII")=0.5*Temission0('co2',"EII");
+ 967  *clim_s("elecutil")=0.7*Temission0('co2',"elecutil");
+ 968  *clim=1*Temission1('co2');
+ 969   
+ 970  *benchmark calibration
+ 971   
+ 972  China3E.iterlim =100000;
+ 973   
+INCLUDE    E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test model - V12- Sue 
+           Wing\China3E.gen
+1060  {   52}  LOOP((I)$(ELEC(I)),
+****                        $140
+**** LINE     86 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1066  {   52}    PUT /,'+C(B):'ENESTA;
+****                                $140
+**** LINE     92 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1067  {   53}    IF(ABS(OUTPUT0(I)) GT MPSEPS,
+****                          $140
+**** LINE     93 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1071  {   54}    LOOP((SUB_ELEC)$(TD(SUB_ELEC)),
+****                               $140
+**** LINE     97 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1072  {   54}      IF(ABS(OUTPUTELEC0(SUB_ELEC)) GT MPSEPS,
+****                                $140
+**** LINE     98 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1077  {   55}    LOOP((SUB_ELEC)$(WSE(SUB_ELEC)),
+****                                $140
+**** LINE    103 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1091  {   57}    LOOP((SUB_ELEC)$(FFE(SUB_ELEC)),
+****                                $140
+**** LINE    117 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1104  {   60}    PUT /,'+L(S):'ESLM("L");
+****                              $140$116
+**** LINE    130 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1105  {   60}    PUT /,'+LH(L):'ESLM("LH");
+****                                    $116
+**** LINE    131 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1106  {   60}    PUT /,'+LL(L):'ESLM("LL");
+****                                    $116
+**** LINE    132 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1114  {   62}    LOOP((I)$(NOT E(I)),
+****                           $140
+**** LINE    140 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1115  {   62}      IF(ABS(INTELEC0(I,SUB_ELEC)) GT MPSEPS,
+****                             $140
+**** LINE    141 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1121  {   63}      IF(ABS((INTELEC0(ELEC,SUB_ELEC)*AEEI("ELECUTIL"))) GT MPSEPS,
+****                                                  $140
+**** LINE    147 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1126  {   64}    LOOP((FE),
+****                    $120,340
+**** LINE    152 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1132  {   65}    LOOP((LM)$(LL(LM)),
+****                         $140
+**** LINE    158 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1133  {   65}      IF(ABS(LABORELEC0(SUB_ELEC,LM)) GT MPSEPS,
+****                               $140
+**** LINE    159 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1140  {   66}    LOOP((LM)$(HL(LM)),
+****                         $140
+**** LINE    166 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1148  {   67}    IF(ABS(KELEC0(SUB_ELEC)) GT MPSEPS,
+****                         $140
+**** LINE    174 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1163  {   71}    PUT /,'+ENE(KE):'SIGMA("ENE_P");
+****                                  $140    $116
+**** LINE    189 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1175  {   74}      IF(ABS(EMISSION0("SO2","E","PROCESS",SUB_ELEC)) GT MPSEPS,
+****                              $140  $116$116      $116
+**** LINE    201 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1182  {   75}      IF(ABS((INTELEC0(I,SUB_ELEC)*EMKUP(SUB_ELEC))) GT MPSEPS,
+****                                                $140
+**** LINE    208 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1250  {   87}    IF ((ABS(ESUB("ELECUTIL","FF")) GT MPSEPS),PUT /,'+S:'ESUB("ELE
+****                         $140            $116
+      CUTIL","FF");  );
+**** LINE    276 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1252  {   87}    PUT /,'+VA(A):'ESUB("ELECUTIL","KL");
+****                                               $116
+**** LINE    278 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1362  {  107}    PUT /,'+E(KE):'SIGMA("ELE_P");
+****                                        $116
+**** LINE    388 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1370  {  108}      PUT /,'+P:'(1-TX0(I));
+****                               $140
+**** LINE    396 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1382  {  110}      IF(ABS(INT0(J,I)) GT MPSEPS,
+****                         $140
+**** LINE    408 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1388  {  111}    IF(ABS(FACT0("CAPITAL",I)) GT MPSEPS,
+****                        $140      $116
+**** LINE    414 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1394  {  112}      IF(ABS(LABOR0(I,LM)) GT MPSEPS,
+****                           $140
+**** LINE    420 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1519  {  135}  IF ((ABS(ESUB_C) GT MPSEPS),PUT /,'+S:'ESUB_C;  );
+****                         $140
+**** LINE    545 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1521  {  135}  PUT /,'+E:'SIGMA("ENE_FD");
+****                                   $116
+**** LINE    547 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1530  {  137}    IF(ABS((CONS0(I)*AEEI("FD"))) GT MPSEPS,
+****                                      $116
+**** LINE    556 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1545  {  139}    IF(ABS(EMISSION0("CO2","E",FE,"HOUSEHOLD")) GT MPSEPS,
+****                                                     $116
+**** LINE    571 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1571  {  146}  IF ((ABS(ESUB_INV) GT MPSEPS),PUT /,'+S:'ESUB_INV;  );
+****                           $140
+**** LINE    597 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1586  {  155}  IF(ABS((SUM(I,CONS0(I)+INV0(I))+SUM(F,CONSF0(F)+INVF0(F)))) GT MP
+****                                                               $140
+      SEPS,
+**** LINE    612 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1605  {  168}  IF(ABS(FACT("CAPITAL")) GT MPSEPS,
+****                       $119   $140,8,10,8,409
+**** LINE    631 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1607  {  168}    PUT /,'+Q:'FACT("CAPITAL");
+****                             $119    $8$191
+**** LINE    633 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1609  {  169}  );
+****           $408
+**** LINE    635 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1611  {  169}    IF(ABS((TLABOR_S0(LM))) GT MPSEPS,
+****                             $140
+**** LINE    637 INCLUDE     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\China3E.gen
+**** LINE    326 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1859   
+1860  solve China3E using mcp;
+****                         $257
+**** LINE    328 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1861   
+1862  display China3E.modelstat, China3E.solvestat,rgdp.l,gprod.l;
+1863   
+1864  *check2(sub_elec)     =   outputelec0(sub_elec)*(1-taxelec0(sub_elec))-emk
+      up(sub_elec)*(sum(i,intelec0(i,sub_elec))+kelec0(sub_elec)+ffelec0(sub_ele
+      c)+sum(lm,wage('0.11',lm)*laborelec0(sub_elec,lm)));
+1865  check2 = sum(i,fact0("capital",i))-fact0("capital","elecutil")+sum(sub_ele
+****       $140                                                                 
+      c,kelec0(sub_elec)*emkup(sub_elec))-fact("capital");
+                                               $119    $8,409
+**** LINE    333 INPUT       E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test
+                             model - V12- Sue Wing\core.gms
+1866  display check2,emkup;
+1867   
+1868   
+1869  *parameter chek1 ;
+1870  *chek1=pcons.l*grosscons.l+pinv.l*grossinvk.l+pe.l*grossexp.l-sum(i,pm.l(i
+      )*qimp.l(i));;
+1871  *chek2(i)=output0(i)-sum(j,int0(j,i))-fact0("capital",i)-sum(lm,labor0(i,l
+      m))-ffact0(i);
+1872  *chek3(sub_elec)=outputelec0(sub_elec)*(1-taxelec0(sub_elec))-sum(i,intele
+      c0(i,sub_elec))-kelec0(sub_elec)-sum(lm,laborelec0(sub_elec,lm))
+1873  *chek2(i)=fact0("labor",i)-sum(lm,labor0(i,lm));
+1874  *display chek1;
+1875   
+1876   
+1877   
+1878  parameter
+1879  report1    reporting variable
+1880  report2    reporting variable
+1881  report3    reporting variable
+1882  report4    reporting variable
+1883  report5
+1884  report6
+1885  report7
+1886  report8
+1887  report9
+1888  report10
+1889  report11
+1890  ;
+1891  *UNEM
+1892  *Pwage;;
+1893   
+1894  *report1(lm)=sum(i,qlin.l(lm,i))+sum(sub_elec,qlin_ele.l(lm,sub_elec));
+1895  *report1(lm)=ur.l(lm)-ur0(lm);
+1896  *report1(lm)=ur0(lm)*(pl.l(lm)/wage("0.11",lm))**(-10)-ur.l(lm);
+1897  *display report1;
+1898   
+       
+       
+       
+      *set rate reduction rate /0,10,20,30,40,50,60,70,80,90/  ;
+      set z reduction rate /0,1,2,3,4,5,6,7,8,9/  ;
+      parameter rate(z) /0=0,
+                         1=0.1,
+                         2=0.2,
+                         3=0.3,
+                         4=0.4,
+                         5=0.5,
+                         6=0.6,
+                         7=0.7,
+                         8=0.8,
+                         9=0.9/;
+       
+       
+      loop(z,
+      *clim=(1-(ord(rate)-1)/10)*Temission1("co2");
+      *clim_s("elecutil")=(1-(ord(rate)-1)/10)*Temission0('co2',"elecutil");
+      *clim_s("EII")=(1-(ord(rate)-1)/10)*Temission0('co2',"EII");
+      *clim_s("construction")=(1-(ord(rate)-1)/10)*Temission0('co2',"constructio
+      n");
+      clim_s("elecutil")=(1-rate(z))*Temission0('co2',"elecutil");
+       
+      *sigma("kle_ele") = rate(z)*0.6;
+      $include China3E.gen
+       
+      solve China3E using mcp;
+       
+      display China3E.modelstat, China3E.solvestat,clim,rate,sigma;
+       
+      UNEM(lm,z)=UR.l(lm);
+      pwage(lm,z)=pl.l(lm);
+       
+      report1(z,i)=qdout.l(i);
+      report2(z,i)=sum(fe,ccoef_p(fe)*qin.l(fe,i));
+      report2(z,sub_elec)=sum(fe,ccoef_p(fe)*qin_ele.l(fe,sub_elec));
+      report2(z,fe)=0;
+      report2(z,"household")=sum(fe,ccoef_h(fe)*qc.l(fe));
+      report3(z,i,j)=qin.l(i,j);
+      report3(z,i,sub_elec)=qin_ele.l(i,sub_elec);
+      report3(z,i,"household")=qc.l(i);
+      report4(z,i)=qffin.l(i);
+      report4(z,sub_elec)=qffelec.l(sub_elec);
+      report5(z)=   pcons.l*grosscons.l+pinv.l*grossinvk.l+sum(i,py.l(i)*((nx0(i
+      )+xinv0(i)+xcons0(i))*xscale));
+      report6(z,lm)= sum(i,qlin.l(lm,i))+sum(sub_elec,qlin_ele.l(lm,sub_elec));
+      report7(z)= sum(i,qkin.l(i))+sum(sub_elec,qkin_ele.l(sub_elec));
+      report8(z,sub_elec)=qelec.l(sub_elec);
+      report9(z,sub_elec,lm)=qlin_ele.l(lm,sub_elec);
+       
+      );
+      execute_unload "results.gdx" UNEM Pwage report1 report2 report3  report4 r
+      eport5  report6 report7 report8  report9
+      execute 'gdxxrw.exe results.gdx par=unem rng=UNEM!'
+      execute 'gdxxrw.exe results.gdx par=Pwage rng=wage!'
+      execute 'gdxxrw.exe results.gdx par=report1 rng=output!'
+      execute 'gdxxrw.exe results.gdx par=report2 rng=emission!'
+      execute 'gdxxrw.exe results.gdx par=report3 rng=input!'
+      execute 'gdxxrw.exe results.gdx par=report4 rng=ffactor!'
+      execute 'gdxxrw.exe results.gdx par=report5 rng=GDP!'
+      execute 'gdxxrw.exe results.gdx par=report6 rng=labor!'
+      execute 'gdxxrw.exe results.gdx par=report7 rng=capital!'
+      execute 'gdxxrw.exe results.gdx par=report8 rng=ele_out!'
+      execute 'gdxxrw.exe results.gdx par=report9 rng=ele_labor!'
+       
+GAMS 24.4.3  r51699 Released Apr  2, 2015 WIN-VS8 x86 32bit/MS Windows 04/12/16 17:44:42 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Error Messages
+
+
+  8  ')' expected
+ 10  ',' expected
+116  Label is unknown
+119  Number (primary) expected
+120  Unknown identifier entered as set
+140  Unknown symbol
+171  Domain violation for set
+191  Closing quote missing
+257  Solve statement not checked because of previous errors
+340  A label/element with the same name exist. You may have forgotten
+        to quote a label/element reference. For example,
+        set i / a,b,c /; parameter x(i); x('a') = 10;
+353  The domain for this index position is unknown and the element
+        cannot be checked at this point. Missing data statement.
+408  Too many ),] or }
+409  Unrecognizable item - skip to find a new statement
+       looking for a ';' or a key word to get started again
+
+**** 92 ERROR(S)   0 WARNING(S)
+GAMS 24.4.3  r51699 Released Apr  2, 2015 WIN-VS8 x86 32bit/MS Windows 04/12/16 17:44:42 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Include File Summary
+
+
+   SEQ   GLOBAL TYPE      PARENT   LOCAL  FILENAME
+
+     1        1 INPUT          0       0  E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\
+                                          »ìºÏÄ£ÐÍ\test model - V12- Sue Wing\co
+                                          re.gms
+     2      294 SYSINCLUDE     1     294  .D:\GAMS\win32\24.4\mpsgeset
+     3      313 CALL           2      19  .gmsge_nx "E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×Ô
+                                           È»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test model - V12-
+                                           Sue Wing\225a\gamscge.dat"
+     4      314 INCLUDE        2      20  ..E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½
+                                            ð\»ìºÏÄ£ÐÍ\test model - V12- Sue Win
+                                            g\225a\gamsgeh.dat
+     5      942 EXIT           2      22  .D:\GAMS\win32\24.4\mpsgeset
+     6      974 INCLUDE        1     326  .E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð
+                                           \»ìºÏÄ£ÐÍ\test model - V12- Sue Wing\
+                                           China3E.gen
+     7     1858 EXIT           6     884  .E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð
+                                           \»ìºÏÄ£ÐÍ\test model - V12- Sue Wing\
+                                           China3E.gen
+
+
+COMPILATION TIME     =        0.297 SECONDS      3 MB  24.4.3 r51699 WIN-VS8
+
+
+USER: Yaqian Mu                                      G150107:0436AO-WIN
+      Tsinghua University, Res. Centre for International EnvironmDC6727
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test model - V12- Sue 
+           Wing\core.gms
+Output     E:\Ä¸ÑÇÇ¬ÔÚÇå»ª\×éÄÚÊÂÎñ\×ÔÈ»¿ÆÑ§»ù½ð\»ìºÏÄ£ÐÍ\test model - V12- Sue 
+           Wing\core.lst
+
+**** USER ERROR(S) ENCOUNTERED

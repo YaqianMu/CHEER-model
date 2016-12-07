@@ -1,0 +1,168 @@
+
+--- Job run.gms Start 12/07/16 11:48:49 24.4.6 r52609 WEX-WEI x86 64bit/MS Windows
+GAMS 24.4.6   Copyright (C) 1987-2015 GAMS Development. All rights reserved
+Licensee: Yaqian Mu                                      G150107:0436AO-WIN
+          Tsinghua University, Res. Centre for International EnvironmDC6727
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- run.gms(1) 2 Mb
+--- .sets.gms(109) 3 Mb
+--- call GDXXRW.EXE data.xlsx par=sam rng=A1
+
+GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
+Input file : C:\Users\hero\Desktop\Github\CHEER model\data.xlsx
+Output file: C:\Users\hero\Desktop\Github\CHEER model\data.gdx
+Total time = 1516 Ms
+--- .sets.gms(114) 3 Mb
+--- GDXin=C:\Users\hero\Desktop\Github\CHEER model\data.gdx
+--- .sets.gms(251) 3 Mb
+--- run.gms(3) 3 Mb
+--- .subsititution elasticities.gms(69) 3 Mb
+--- run.gms(4) 3 Mb
+--- .emission data.gms(163) 3 Mb
+--- run.gms(6) 3 Mb
+--- .electricity.gms(6) 3 Mb
+--- call GDXXRW.EXE elec.xlsx par=Eprop rng=A1:J34
+
+GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
+Input file : C:\Users\hero\Desktop\Github\CHEER model\elec.xlsx
+Output file: C:\Users\hero\Desktop\Github\CHEER model\elec.gdx
+Total time = 1422 Ms
+--- .electricity.gms(11) 3 Mb
+--- GDXin=C:\Users\hero\Desktop\Github\CHEER model\elec.gdx
+--- .electricity.gms(151) 3 Mb
+--- run.gms(7) 3 Mb
+--- .ist.gms(4) 3 Mb
+--- call GDXXRW.EXE ist.xlsx par=isprop rng=A1:C29
+
+GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
+Input file : C:\Users\hero\Desktop\Github\CHEER model\ist.xlsx
+Output file: C:\Users\hero\Desktop\Github\CHEER model\ist.gdx
+Total time = 1797 Ms
+--- .ist.gms(7) 3 Mb
+--- GDXin=C:\Users\hero\Desktop\Github\CHEER model\ist.gdx
+--- .ist.gms(48) 3 Mb
+--- run.gms(9) 3 Mb
+--- .labor market.gms(53) 3 Mb
+--- call GDXXRW.EXE labor.xlsx par=labor_q0 rng=A1:AC19  par=labor_v0 rng=A21:AC39 par=labordata  rng=A41:AC43
+
+GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
+Input file : C:\Users\hero\Desktop\Github\CHEER model\labor.xlsx
+Output file: C:\Users\hero\Desktop\Github\CHEER model\labor.gdx
+Total time = 1437 Ms
+--- .labor market.gms(60) 3 Mb
+--- GDXin=C:\Users\hero\Desktop\Github\CHEER model\labor.gdx
+--- .labor market.gms(301) 3 Mb
+--- run.gms(11) 3 Mb
+--- .backstop.gms(57) 3 Mb
+--- run.gms(12) 3 Mb
+--- .trend.gms(5) 3 Mb
+--- call GDXXRW.EXE trend.xlsx par=PAT rng=A1:D18   par=RET1 rng=A26:I35   par=RET2 rng=A37:I46   par=sffelec_b rng=A47:I57  par=sffelec_BAU rng=A58:I68
+
+GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
+Input file : C:\Users\hero\Desktop\Github\CHEER model\trend.xlsx
+Output file: C:\Users\hero\Desktop\Github\CHEER model\trend.gdx
+Total time = 1641 Ms
+--- .trend.gms(12) 3 Mb
+--- GDXin=C:\Users\hero\Desktop\Github\CHEER model\trend.gdx
+--- .trend.gms(70) 3 Mb
+--- run.gms(13) 3 Mb
+--- .core_1207.gms(290) 3 Mb
+--- Running the MPSGE preprocessor ...
+--- ..mpsgeset(19) 3 Mb
+--- call gmsge_nx "C:\Users\hero\Desktop\Github\CHEER model\225b\gamscge.dat"
+--- ..mpsgeset(20) 3 Mb
+--- ...gamsgeh.dat(640) 3 Mb
+--- ..mpsgeset(22) 3 Mb
+--- .core_1207.gms(339) 3 Mb
+--- ..China3E.gen(940) 3 Mb
+--- .core_1207.gms(351) 3 Mb
+--- run.gms(26) 3 Mb
+--- Starting execution: elapsed 0:00:08.378
+--- run.gms(3063) 4 Mb
+--- Generating MCP model CHINA3E
+--- run.gms(3066) 7 Mb
+---   20 rows  838 columns  906 non-zeroes
+---   120 nl-code  32 nl-non-zeroes
+--- run.gms(3066) 4 Mb
+--- Executing MPSGE: elapsed 0:00:08.416
+
+MPSGE: Extracting Jacobian nonzero structure.
+
+--- Executing MCP subsolver PATH
+Reading dictionary...
+Reading row data...
+Evaluating functions...
+Checking model...
+Calculating Jacobian...
+
+PATH             24.4.6 r52609 Released Jun 26, 2015 WEI x86 64bit/MS Windows 
+
+130 row/cols, 3494 non-zeros, 20.67% dense.
+
+Path 4.7.02 (Fri Jun 26 15:39:32 2015)
+Written by Todd Munson, Steven Dirkse, and Michael Ferris
+
+MCPR: Zero:     0 Single:     4 Double:     0 Forced:     0
+Preprocessed size   : 126
+
+INITIAL POINT STATISTICS
+Maximum of X. . . . . . . . . .  7.6843e+005 var: (RA)
+Maximum of F. . . . . . . . . .  3.1153e+005 eqn: (Y.Agri)
+Maximum of Grad F . . . . . . .  6.6256e+005 eqn: (RA)
+                                            var: (PLS.low)
+
+INITIAL JACOBIAN NORM STATISTICS
+Maximum Row Norm. . . . . . . .  1.5242e+006 eqn: (RA)
+Minimum Row Norm. . . . . . . .  1.1000e+000 eqn: (SFFELEC.Hydro)
+Maximum Column Norm . . . . . .  1.3867e+006 var: (L_A.low)
+Minimum Column Norm . . . . . .  1.0000e+000 var: (RGDP)
+
+Major Iteration Log
+major minor  func  grad  residual    step  type prox    inorm  (label)
+    0     0     1     1 2.3631e+005           I 0.0e+000 2.0e+005 (L_A.low)
+    1    39     3     2 4.3572e+004  8.0e-001 SB 0.0e+000 4.1e+004 (L_A.low)
+    2     3     4     3 7.7325e+005  1.0e+000 SO 0.0e+000 7.7e+005 (PL.Agri.low)
+    3     4     5     4 8.3085e+005  1.0e+000 SO 0.0e+000 8.3e+005 (PL.Agri.low)
+    4     3     6     5 2.6965e+005  1.0e+000 SO 0.0e+000 2.7e+005 (PL.Agri.low)
+    5     1     7     6 1.1337e+004  1.0e+000 SO 0.0e+000 8.1e+003 (PL.Serv.low)
+    6     1     8     7 8.8687e+002  1.0e+000 SO 0.0e+000 8.1e+002 (PL.Serv.low)
+    7     1     9     8 1.4257e+000  1.0e+000 SO 0.0e+000 1.2e+000 (PL.Serv.low)
+    8     1    10     9 6.2810e-006  1.0e+000 SO 0.0e+000 5.4e-006 (PL.Agri.low)
+    9     1    11    10 1.5512e-008  1.0e+000 SO 0.0e+000 1.5e-008 (PL.Agri.low)
+
+FINAL STATISTICS
+Inf-Norm of Complementarity . .  3.9057e-007 eqn: (RGDP)
+Inf-Norm of Normal Map. . . . .  1.5192e-008 eqn: (PL.Agri.low)
+Inf-Norm of Minimum Map . . . .  1.5192e-008 eqn: (PL.Agri.low)
+Inf-Norm of Fischer Function. .  1.5192e-008 eqn: (PL.Agri.low)
+Inf-Norm of Grad Fischer Fcn. .  2.4880e-001 eqn: (PL.Agri.low)
+Two-Norm of Grad Fischer Fcn. .  2.5301e-001
+
+FINAL POINT STATISTICS
+Maximum of X. . . . . . . . . .  5.3680e+004 var: (RGDP)
+Maximum of F. . . . . . . . . .  1.5192e-008 eqn: (PL.Agri.low)
+Maximum of Grad F . . . . . . .  1.6435e+007 eqn: (PL.Agri.low)
+                                            var: (PL.Agri.low)
+
+ ** EXIT - solution found.
+
+Major Iterations. . . . 9
+Minor Iterations. . . . 54
+Restarts. . . . . . . . 0
+Crash Iterations. . . . 0
+Gradient Steps. . . . . 0
+Function Evaluations. . 11
+Gradient Evaluations. . 10
+Total Time. . . . . . . 0.096000
+Residual. . . . . . . . 1.551218e-008
+Postsolved residual: 1.5512e-008
+
+--- Restarting execution
+--- run.gms(3066) 2 Mb
+--- Reading solution for model CHINA3E
+--- Executing after solve: elapsed 0:00:08.812
+--- run.gms(3073) 3 Mb
+--- Putfile MPS C:\Users\hero\Desktop\Github\CHEER model\225b\gamscge.dat
+*** Status: Normal completion
+--- Job run.gms Stop 12/07/16 11:48:58 elapsed 0:00:08.813

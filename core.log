@@ -1,0 +1,275 @@
+
+--- Job core.gms Start 04/12/16 17:44:42 24.4.3 r51699 WIN-VS8 x86 32bit/MS Windows
+GAMS 24.4.3   Copyright (C) 1987-2015 GAMS Development. All rights reserved
+Licensee: Yaqian Mu                                      G150107:0436AO-WIN
+          Tsinghua University, Res. Centre for International EnvironmDC6727
+          License for teaching and research at degree granting institutions
+--- Starting compilation
+--- core.gms(26) 2 Mb 1 Error
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\core.gms
+    Unknown symbol
+--- core.gms(294) 2 Mb
+--- Running the MPSGE preprocessor ...
+--- .mpsgeset(19) 2 Mb
+--- call gmsge_nx "E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamscge.dat"
+--- .mpsgeset(20) 2 Mb
+--- ..gamsgeh.dat(16) 2 Mb 2 Errors
+*** Error 120 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown identifier entered as set
+--- ..gamsgeh.dat(20) 2 Mb 3 Errors
+*** Error 120 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown identifier entered as set
+--- ..gamsgeh.dat(21) 2 Mb 4 Errors
+*** Error 120 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown identifier entered as set
+--- ..gamsgeh.dat(24) 2 Mb 5 Errors
+*** Error 120 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown identifier entered as set
+--- ..gamsgeh.dat(36) 2 Mb 6 Errors
+*** Error 120 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown identifier entered as set
+--- ..gamsgeh.dat(44) 2 Mb 7 Errors
+*** Error 120 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown identifier entered as set
+--- ..gamsgeh.dat(74) 2 Mb 8 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(80) 2 Mb 9 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(84) 2 Mb 10 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(85) 2 Mb 11 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(86) 2 Mb 12 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(87) 2 Mb 13 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(89) 2 Mb 14 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(91) 2 Mb 15 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(95) 2 Mb 16 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(111) 2 Mb 17 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(155) 2 Mb 19 Errors
+*** Error 171 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Domain violation for set
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(160) 3 Mb 20 Errors
+*** Error 353 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    The domain for this index position is unknown and the element
+       cannot be checked at this point. Missing data statement.
+--- ..gamsgeh.dat(165) 3 Mb 21 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(175) 3 Mb 22 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(190) 3 Mb 31 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+*** Error 120 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown identifier entered as set
+*** Error 340 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    A label/element with the same name exist. You may have forgotten
+       to quote a label/element reference. For example,
+       set i / a,b,c /; parameter x(i); x('a') = 10;
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(195) 3 Mb 32 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(205) 3 Mb 34 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\225a\gamsgeh.dat
+    Unknown symbol
+--- ..gamsgeh.dat(626) 3 Mb
+--- .mpsgeset(22) 3 Mb
+--- core.gms(326) 3 Mb
+--- .China3E.gen(86) 3 Mb 35 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(92) 3 Mb 36 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(93) 3 Mb 37 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(97) 3 Mb 38 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(98) 3 Mb 39 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(103) 3 Mb 40 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(117) 3 Mb 41 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(130) 3 Mb 43 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(131) 3 Mb 44 Errors
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(132) 3 Mb 45 Errors
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(140) 3 Mb 46 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(141) 3 Mb 47 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(147) 3 Mb 48 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(152) 3 Mb 50 Errors
+*** Error 120 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown identifier entered as set
+*** Error 340 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    A label/element with the same name exist. You may have forgotten
+       to quote a label/element reference. For example,
+       set i / a,b,c /; parameter x(i); x('a') = 10;
+--- .China3E.gen(158) 3 Mb 51 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(159) 3 Mb 52 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(166) 3 Mb 53 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(174) 3 Mb 54 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(189) 3 Mb 56 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(201) 3 Mb 60 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(208) 3 Mb 61 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(276) 3 Mb 63 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(278) 3 Mb 64 Errors
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(388) 3 Mb 65 Errors
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(396) 3 Mb 66 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(408) 3 Mb 67 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(414) 3 Mb 69 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(420) 3 Mb 70 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(545) 3 Mb 71 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(547) 3 Mb 72 Errors
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(556) 3 Mb 73 Errors
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(571) 3 Mb 74 Errors
+*** Error 116 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Label is unknown
+--- .China3E.gen(597) 3 Mb 75 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(612) 3 Mb 76 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(631) 3 Mb 82 Errors
+*** Error 119 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Number (primary) expected
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+*** Error   8 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    ')' expected
+*** Error  10 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    ',' expected
+*** Error   8 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    ')' expected
+*** Error 409 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- .China3E.gen(633) 3 Mb 85 Errors
+*** Error 119 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Number (primary) expected
+*** Error   8 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    ')' expected
+*** Error 191 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Closing quote missing
+--- .China3E.gen(635) 3 Mb 86 Errors
+*** Error 408 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Too many ),] or }
+--- .China3E.gen(637) 3 Mb 87 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\China3E.gen
+    Unknown symbol
+--- .China3E.gen(884) 3 Mb
+--- core.gms(328) 3 Mb 88 Errors
+*** Error 257 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\core.gms
+    Solve statement not checked because of previous errors
+--- core.gms(333) 3 Mb 92 Errors
+*** Error 140 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\core.gms
+    Unknown symbol
+*** Error 119 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\core.gms
+    Number (primary) expected
+*** Error   8 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\core.gms
+    ')' expected
+*** Error 409 in E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V12- Sue Wing\core.gms
+    Unrecognizable item - skip to find a new statement
+      looking for a ';' or a key word to get started again
+--- core.gms(432) 3 Mb 92 Errors
+*** Status: Compilation error(s)
+--- Job core.gms Stop 04/12/16 17:44:42 elapsed 0:00:00.329
+Exit code = 2

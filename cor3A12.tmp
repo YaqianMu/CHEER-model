@@ -1,0 +1,398 @@
+*----------------------------------------------*
+*Core static model    2015/12/9   对生产函数/消费和投资结构做了重新的调整
+*12/15 电力行业的结构确定为    s:0   a:10       b(a):1.5  化石能源之间先替代，在于非化石能源替代
+*12/16   修改进口禀赋的规模参数，Xscale 表示贸易平衡的变化，而非进口规模
+*删减进出口和阿明顿方程，模型尽可能简化
+*增加规模系数A，结合TFP用以表示全要素生产率的变化
+*12/20   设置ur.lo排除=0的计算错误   假设存在自然失业率作为失业率的最小值，取值为bur("b",lm)，来源于输入数据
+*12/21   修正l-le的替代弹性
+*        增加系数B，用以描述自然失业率的变化
+*12/25   修改生产函数结构，将劳动力的投入放在一起，聚合后再与K或E组合
+*03/11   修改TFP的作用位置，添加baseline calibration模块
+
+*----------------------------------------------*
+parameter      A                      /1/         ;
+parameter      B                      /1/         ;
+parameter simu;
+simu=1;
+
+$ONTEXT
+$Model:China3E
+
+$Sectors:
+y(i)                   !activity level for domestic production
+consum                 !activity level for aggregate consumption
+invest                 !activity level for aggregate physical capital investment
+welf                   !activity level for aggregate welfare
+yelec(sub_elec)        !Activity level for electricity production
+yelec_base             !Activity level for fossil fuel electricity production
+*yist(sub_ist)         !Activity level for ist production
+eb(bt)$active(bt)      !activity level for backstop technology
+
+$Commodities:
+py(i)                  !domestic price inex for goods
+pelec(sub_elec)$(not hne(sub_elec))        !domestic price inex for subelec
+pe_base                !domestic price inex for baseload electricity
+pl(lm)
+pk                     !domestic price index for captial
+pffact(i)$x(i)         !domestic price index for fixed factors
+pffelec(sub_elec)$ffelec0(sub_elec)                !domestic price index for fixed factors in electric sector
+pcons                  !price index for aggregate consumption
+pinv                   !price index for aggregate physical capital investment
+pu                     !price index for utility
+
+pbf(bt)$active(bt)                !basic factor of backstop
+
+pco2$clim
+pco2_s(i)$clim_s(i)              !shadow value of cafbon
+pco2_h$clim_h
+PSO2$slim              !shadow value of sulfur
+
+$consumers:
+ra                     !income level for representative agent
+
+$auxiliary:
+sff(x)$ffact0(x)       !side constraint modelling supply of fixed factor
+sffelec(sub_elec)$ffelec0(sub_elec)         !side constraint modelling supply of fixed factors
+ur(lm)$ur0(lm)                 !unemployment rate
+rgdp                     !real gdp
+gprod                    !productivity index
+gprod2(lm)                    !productivity index
+
+$prod:y(i)$elec(i)   s:0   a:10
+        o:py(i)                                  q:output0(i)
+        i:pelec(sub_elec)$TD(sub_elec)        q:outputelec0(sub_elec)
+        i:pelec(sub_elec)$cfe(sub_elec)       q:outputelec0(sub_elec)         a:
+        i:pe_base                             Q:(sum(ffe,outputelec0(ffe))+sum(hne,outputelec0(hne)))  a:
+
+$prod:yelec_ff   s:enesta
+        o:pe_base                             q:(sum(ffe,outputelec0(ffe))
+        i:pelec(sub_elec)$ffe(sub_elec)       q:outputelec0(sub_elec)
+
+*       Production of T&D electricity
+$prod:yelec(sub_elec)$TD(sub_elec) s:0       l(s):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll")
+        o:pelec(sub_elec)        q:(outputelec0(sub_elec))              p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+        i:py(i)                  q:intelec0(i,sub_elec)
+        i:pl(lm)$ll(lm)          q:laborelec0(sub_elec,lm)            P:wage("0.11",lm)        ll:
+        i:pl(lm)$hl(lm)          q:laborelec0(sub_elec,lm)            P:wage("0.11",lm)         lh:
+        i:pk                     q:kelec0(sub_elec)
+
+*       Production of fossile fuel electricity
+*sub_sector 投入的替代弹性应该小于原sector
+$prod:yelec(sub_elec)$ffe(sub_elec) s:0   kle(s):0.84 l(kle):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll") ke(kle):0.5  ene(ke):sigma("ene_p") roil(ene):0 coal(ene):0 gas(ene):0
+        o:pelec(sub_elec)        Q:outputelec0(sub_elec)           p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+        i:PSO2$slim              Q:emission0("so2","e","process",sub_elec)        P:1e-5
+        i:py(i)$(not e(i))       q:(intelec0(i,sub_elec)*emkup(sub_elec))
+        i:py(elec)               q:(intelec0(elec,sub_elec)*aeei("elecutil")*emkup(sub_elec))
+        i:pl(lm)$ll(lm)          q:(laborelec0(sub_elec,lm)*emkup(sub_elec))               P:wage("0.11",lm)   ll:
+        i:pl(lm)$hl(lm)          q:(laborelec0(sub_elec,lm)*emkup(sub_elec))               P:wage("0.11",lm)   lh:
+        i:pk                     q:(kelec0(sub_elec)*emkup(sub_elec))                         ke:
+        i:py(fe)$intelec0(fe,sub_elec)    q:(intelec0(fe,sub_elec)*aeei("elecutil")*emkup(sub_elec))                            fe.tl:
+        i:pco2#(fe)$clim         q:(emission0("co2","e",fe,sub_elec)*emkup(sub_elec))      p:1e-5             fe.tl:
+        i:pco2_s("elecutil")#(fe)$clim_s("elecutil")         q:(emission0("co2","e",fe,sub_elec)*emkup(sub_elec))      p:1e-5             fe.tl:
+        I:PSO2#(fe)$slim         Q:(emission0("so2","e",fe,sub_elec)*emkup(sub_elec))      P:1e-5         fe.tl:
+
+
+*       Production of hybro and nuclear electricity      va2 from wang ke
+$prod:yelec(sub_elec)$hne(sub_elec)  s:esub("nuclear","ff") a:0 va(a):esub("elecutil","kl") l(va):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll")
+        o:pe_base                q:outputelec0(sub_elec)              p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+        i:py(i)                  q:intelec0(i,sub_elec)                                              a:
+        i:pl(lm)$ll(lm)          q:laborelec0(sub_elec,lm)              P:wage("0.11",lm)            ll:
+        i:pl(lm)$hl(lm)          q:laborelec0(sub_elec,lm)              P:wage("0.11",lm)            lh:
+        i:pk                     q:kelec0(sub_elec)                                                  va:
+        i:pffelec(sub_elec)$ffelec0(sub_elec)                q:ffelec0(sub_elec)      P:1
+
+*       Production of wind, solar and biomass electricity      va2 from wang ke
+$prod:yelec(sub_elec)$wsb(sub_elec) s:0  a:esub("elecutil","ff") b(a):0 va(b):esub("elecutil","kl") l(va):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll")
+        o:pelec(sub_elec)        q:(outputelec0(sub_elec))              p:(1-taxelec0(sub_elec))  a:ra  t:taxelec0(sub_elec)
+        I:PSO2$slim              Q:emission0("so2","e","process",sub_elec)        P:1e-5
+        i:py(i)                  q:intelec0(i,sub_elec)                                              b:
+        i:pl(lm)$ll(lm)          q:laborelec0(sub_elec,lm)              P:wage("0.11",lm)            ll:
+        i:pl(lm)$hl(lm)          q:laborelec0(sub_elec,lm)              P:wage("0.11",lm)            lh:
+        i:pk                     q:kelec0(sub_elec)                                                 va:
+        i:pffelec(sub_elec)$ffelec0(sub_elec)                q:ffelec0(sub_elec)      P:1             a:
+
+*        production of backstop electricity generation
+*$prod:eb("ngcc")$active("ngcc") sa(s):bsf("ngcc","chn")  fva(sa):0.0  gva1(fva):eslm gva2(gva1):0.5 tva1(fva):eslm tva2(tva1):0.5 f(fva):0
+*    o:pelec("gas_elec")                                             q:1
+*    i:pbf("ngcc")                                                   q:(bsin("ngcc","ffa","chn")*bmkup("ngcc","chn"))                                          sa:
+*    i:pl(lm)$ll(lm)                                                 q:(bsin("ngcc","l","chn")*lprop("elecutil",lm)*bmkup("ngcc","chn"))                           gva2:
+*    i:pl(lm)$hl(lm)                                                 q:(bsin("ngcc","l","chn")*lprop("elecutil",lm)*bmkup("ngcc","chn"))                           gva1:
+*    i:pk                                                            q:(bsin("ngcc","k","chn")*bmkup("ngcc","chn"))                                            gva2:
+*    i:py("gas")                                                     q:(bsin("ngcc","gas","chn")*bmkup("ngcc","chn"))                                          f:
+*    i:pco2#(fe)$clim                                                q:(bsin("ngcc","gas","chn")*bmkup("ngcc","chn")*ccoef_p("gas")/10000)     p:1e-5          f:
+*    i:pco2_s("elecutil")#(fe)$clim_s("elecutil")                    q:(bsin("ngcc","gas","chn")*bmkup("ngcc","chn")*ccoef_p("gas")/10000)     p:1e-5          f:
+*    i:pl(lm)$ll(lm)                                                 q:(bsin("ngcc","ltd","chn")*lprop("elecutil",lm)*bmkup("ngcc","chn"))                         tva2:
+*    i:pl(lm)$hl(lm)                                                 q:(bsin("ngcc","ltd","chn")*lprop("elecutil",lm)*bmkup("ngcc","chn"))                        tva1:
+*    i:pk                                                            q:(bsin("ngcc","ltd","chn")*bmkup("ngcc","chn"))                                          tva2:
+
+
+
+$prod:y(i)$(not fe(i) and not elec(i) ) s:0 a:esub(i,"ff") b(a):0  kle(b):0.84 l(kle):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll") ke(kle):0.5 e(ke):sigma("ele_p") ne(e):sigma("ene_p")  coal(ne):0 roil(ne):0 gas(ne):0
+        o:py(i)                  q:(output0(i))                    p:(1-tx0(i))     a:ra    t:tx0(i)
+        I:PSO2$slim              Q:emission0("so2","e","process",i)        P:1e-5
+        i:py(j)$(not e(j))       q:int0(j,i)                                         b:
+        i:pk                     q:fact0("capital",i)                              ke:
+        i:pl(lm)$ll(lm)          q:labor0(i,lm)             P:wage("0.11",lm)             ll:
+        i:pl(lm)$hl(lm)          q:labor0(i,lm)             P:wage("0.11",lm)             lh:
+        i:pffact(i)$ffact0(i)    q:ffact0(i)                                           a:
+        i:py(elec)               q:(int0(elec,i)*aeei(i))                          e:
+        i:py(fe)                 q:(int0(fe,i)*aeei(i))                            fe.tl:
+        i:pco2#(fe)$clim         q:emission0("co2","e",fe,i)      p:1e-5             fe.tl:
+        i:pco2_s(i)#(fe)$clim_s(i)         q:emission0("co2","e",fe,i)      p:1e-5             fe.tl:
+        I:PSO2#(fe)$slim         Q:emission0("so2","e",fe,i)      P:1e-5              fe.tl:
+
+
+*       Production of fossil fuel production       va from wang ke
+$prod:y(i)$fe(i) s:0 a:esub(i,"ff") b(a):0 va(b):esub(i,"kl") l(va):eslm("l") lh(l):eslm("lh") ll(l):eslm("ll")
+        o:py(i)                  q:(output0(i))                    p:(1-tx0(i))     a:ra    t:tx0(i)
+        I:PSO2$slim              Q:emission0("so2","e","process",i)        P:1e-5
+        i:py(j)                  q:int0(j,i)                                     b:
+        i:pk                     q:fact0("capital",i)            va:
+        i:pl(lm)$ll(lm)          q:labor0(i,lm)        P:wage("0.11",lm)          ll:
+        i:pl(lm)$hl(lm)          q:labor0(i,lm)        P:wage("0.11",lm)          lh:
+        i:pffact(i)$ffact0(i)    q:ffact0(i)                                      a:
+
+
+*        consumption of goods and factors    结构参照EPPA
+
+$prod:consum   s:esub_c  a:0.3 e:sigma("ene_fd") roil(e):0 coal(e):0 gas(e):0
+         o:pcons                  q:(sum(i,cons0(i))+sum(f,consf0(f)))
+         i:py(i)$(not fe(i))      q:(cons0(i)*aeei("fd"))                 a:$(not elec(i))    e:$elec(i)
+         i:py(fe)                 q:(cons0(fe)*aeei("fd"))                 fe.tl:
+         i:pco2#(fe)$clim         q:emission0("co2","e",fe,"household")      p:1e-5             fe.tl:
+         i:pco2_h#(fe)$clim_h     q:emission0("co2","e",fe,"household")      p:1e-5           fe.tl:
+         I:PSO2#(fe)$slim         Q:emission0("so2","e",fe,"household")      P:1e-5         fe.tl:
+
+
+*        aggregate capital investment
+
+$prod:invest   s:esub_inv
+         o:pinv             q:(sum(i,inv0(i)))
+         i:py(i)            q:inv0(i)
+
+
+
+*        welfare          王克 EPPA S：取值都为1
+
+$prod:welf    s:1.0
+         o:pu                 q:(sum(i,cons0(i)+inv0(i))+sum(f,consf0(f)+invf0(f)))
+         i:pcons              q:(sum(i,cons0(i))+sum(f,consf0(f)))
+         i:pinv               q:(sum(i,inv0(i))+sum(f,invf0(f)))
+
+
+$demand:ra
+
+*demand for consumption,invest and rd
+
+d:pu                 q:(sum(i,cons0(i)+inv0(i))+sum(f,consf0(f)+invf0(f)))
+
+*endowment of factor supplies
+
+e:pk                 q:fact("capital")                                         r:gprod
+e:pl(lm)             q:(tlabor_s0(lm))                                         r:gprod
+e:pl(lm)$ur0(lm)     q:((-tlabor_s0(lm)))                                      r:gprod2(lm)
+
+e:pffact(x)          q:ffact0(x)                 r:sff(x)$ffact0(x)
+e:pffelec(sub_elec)  q:ffelec0(sub_elec)         r:sffelec(sub_elec)$ffelec0(sub_elec)
+e:pbf(bt)$active(bt) q:(output0("elecutil")*0.01)
+
+*exogenous endowment of net exports(include variances)
+
+e:py(i)              q:(-(nx0(i)+xinv0(i)+xcons0(i))*xscale)
+
+*endowment of carbon emission allowances
+
+e:pco2$clim          q:clim
+e:pco2_s(i)$clim_s(i)    q:clim_s(i)
+e:pco2_h$clim_h      q:clim_h
+e:pso2$slim          q:slim
+
+*supplement benchmark fixed-factor endowments according to assumed price elasticities of resource supply
+
+$constraint:sff(x)$ffact0(x)
+     sff(x)    =e= (py(x)/pu)**eta(x);
+
+$constraint:sffelec(sub_elec)$ffelec0(sub_elec)
+    sffelec(sub_elec) =e=  (py("elecutil")/pu)**eta(sub_elec);
+
+$constraint:ur(lm)$ur0(lm)
+      (Pl(lm)/pu)/(wage("0.11",lm)/pu) =E=(ur(lm)/ur0(lm))**(-0.1);
+*     ur0(lm)*(Pl(lm)/wage("0.11",lm))**(-1/10) =e=ur(lm);
+
+$constraint:gprod2(lm)$(simu ne 0)
+  gprod2(lm) =e= gprod0*ur(lm);
+
+$constraint:gprod2(lm)$(simu eq 0)
+ gprod2(lm) =e= gprod*ur(lm);
+
+$constraint:rgdp
+  pu*rgdp =e= pcons*(sum(i,cons0(i))+sum(f,consf0(f)))*consum+pinv*(sum(i,inv0(i)))*invest+sum(i,py(i)*((nx0(i)+xinv0(i)+xcons0(i))*xscale))   ;
+
+$constraint:gprod$(simu eq 0)
+  rgdp =e= rgdp0;
+
+$constraint:gprod$(simu ne 0)
+  gprod =e= gprod0;
+
+$report:
+
+v:qdout(j)             o:py(j)       prod:y(j)     !output by sector(domestic market)
+
+v:qc(i)                i:py(i)       prod:consum   !consumpiton of final commodities
+v:grosscons            o:pcons       prod:consum   !aggregate consumpiton
+
+v:qinvk(i)             i:py(i)       prod:invest   !physical capital investment by non-energy sectors
+v:grossinvk            o:pinv        prod:invest   !aggregate physical capital investment
+
+
+v:util                 o:pu          prod:welf       !welf
+
+v:qin(i,j)             i:py(i)       prod:y(j)      !inputs of intermediate goods
+v:qin_ele(i,sub_elec)  i:py(i)       prod:yelec(sub_elec)      !inputs of intermediate goods to fossil fuel fired generation
+
+v:qkin(j)              i:pk          prod:y(j)        !capital inputs
+v:qlin(lm,j)           i:pl(lm)      prod:y(j)        !labor inputs
+v:qlin_ele(lm,sub_elec)      i:pl(lm)      prod:yelec(sub_elec)        !labor inputs
+v:qkin_ele(sub_elec)   i:pk          prod:yelec(sub_elec)        !capital inputs
+v:qffin(j)$x(j)        i:pffact(j)   prod:y(j)        !fixed factor inputs
+
+v:qffelec(sub_elec)$cfe(sub_elec)    i:pffelec(sub_elec)     prod:yelec(sub_elec)      !fixed factor inputs
+
+V:qelec1(sub_elec)$(not nhe(sub_elec)        o:pelec(sub_elec)       prod:yelec(sub_elec)
+V:qelec2(nhe)        o:pe_base               prod:yelec(sub_elec)
+
+v:ECO2(i)              i:pco2         prod:y(i)
+v:ECO2_s(i)              i:pco2_s(i)        prod:y(i)
+v:ECO2_se(sub_elec)              i:pco2_s("elecutil")        prod:yelec(sub_elec)
+v:eco2_h                i:pco2_h        prod:consum
+v:EsO2(i)              i:pso2        prod:y(i)
+v:EHsO2                i:pso2        prod:consum
+$offtext
+$sysinclude mpsgeset China3E
+
+*carbon has zero price in the benchmark
+
+*initialize constraints
+
+sff.l(x)$ffact0(x)  =1;
+pu.fx=1;
+ur.l(lm)=ur0(lm);
+ur.lo(lm)=B*ur0(lm);
+gprod.l=1;
+gprod.lo=0;
+
+
+*ur0(lm)=0;
+*clim_s("construction")=0.5*Temission0('co2',"construction");
+*clim_s("transport")=1*Temission0('co2',"transport");
+*clim_s("EII")=0.5*Temission0('co2',"EII");
+*clim_s("elecutil")=0.7*Temission0('co2',"elecutil");
+*clim=1*Temission1('co2');
+
+*benchmark calibration
+
+China3E.iterlim =100000;
+
+$include China3E.gen
+
+solve China3E using mcp;
+
+display China3E.modelstat, China3E.solvestat,rgdp.l,gprod.l;
+
+
+
+*parameter chek1 ;
+*chek1=pcons.l*grosscons.l+pinv.l*grossinvk.l+pe.l*grossexp.l-sum(i,pm.l(i)*qimp.l(i));;
+*chek2(i)=output0(i)-sum(j,int0(j,i))-fact0("capital",i)-sum(lm,labor0(i,lm))-ffact0(i);
+*chek3(sub_elec)=outputelec0(sub_elec)*(1-taxelec0(sub_elec))-sum(i,intelec0(i,sub_elec))-kelec0(sub_elec)-sum(lm,laborelec0(sub_elec,lm))
+*chek2(i)=fact0("labor",i)-sum(lm,labor0(i,lm));
+*display chek1;
+
+
+
+parameter
+report1    reporting variable
+report2    reporting variable
+report3    reporting variable
+report4    reporting variable
+report5
+report6
+report7
+report8
+report9
+report10  ;
+*UNEM
+*Pwage;;
+
+*report1(lm)=sum(i,qlin.l(lm,i))+sum(sub_elec,qlin_ele.l(lm,sub_elec));
+*report1(lm)=ur.l(lm)-ur0(lm);
+*report1(lm)=ur0(lm)*(pl.l(lm)/wage("0.11",lm))**(-10)-ur.l(lm);
+*display report1;
+
+$ontext
+
+
+
+*set rate reduction rate /0,10,20,30,40,50,60,70,80,90/  ;
+set z reduction rate /0,1,2,3,4,5,6,7,8,9/  ;
+parameter rate(z) /0=0,
+                   1=0.1,
+                   2=0.2,
+                   3=0.3,
+                   4=0.4,
+                   5=0.5,
+                   6=0.6,
+                   7=0.7,
+                   8=0.8,
+                   9=0.9/;
+
+
+loop(z,
+*clim=(1-(ord(rate)-1)/10)*Temission1("co2");
+*clim_s("elecutil")=(1-(ord(rate)-1)/10)*Temission0('co2',"elecutil");
+*clim_s("EII")=(1-(ord(rate)-1)/10)*Temission0('co2',"EII");
+*clim_s("construction")=(1-(ord(rate)-1)/10)*Temission0('co2',"construction");
+clim_s("elecutil")=(1-rate(z))*Temission0('co2',"elecutil");
+
+*sigma("kle_ele") = rate(z)*0.6;
+$include China3E.gen
+
+solve China3E using mcp;
+
+display China3E.modelstat, China3E.solvestat,clim,rate,sigma;
+
+UNEM(lm,z)=UR.l(lm);
+pwage(lm,z)=pl.l(lm);
+
+report1(z,i)=qdout.l(i);
+report2(z,i)=sum(fe,ccoef_p(fe)*qin.l(fe,i));
+report2(z,sub_elec)=sum(fe,ccoef_p(fe)*qin_ele.l(fe,sub_elec));
+report2(z,fe)=0;
+report2(z,"household")=sum(fe,ccoef_h(fe)*qc.l(fe));
+report3(z,i,j)=qin.l(i,j);
+report3(z,i,sub_elec)=qin_ele.l(i,sub_elec);
+report3(z,i,"household")=qc.l(i);
+report4(z,i)=qffin.l(i);
+report4(z,sub_elec)=qffelec.l(sub_elec);
+report5(z)=   pcons.l*grosscons.l+pinv.l*grossinvk.l+sum(i,py.l(i)*((nx0(i)+xinv0(i)+xcons0(i))*xscale));
+report6(z,lm)= sum(i,qlin.l(lm,i))+sum(sub_elec,qlin_ele.l(lm,sub_elec));
+report7(z)= sum(i,qkin.l(i))+sum(sub_elec,qkin_ele.l(sub_elec));
+report8(z,sub_elec)=qelec.l(sub_elec);
+report9(z,sub_elec,lm)=qlin_ele.l(lm,sub_elec);
+
+);
+execute_unload "results.gdx" UNEM Pwage report1 report2 report3  report4 report5  report6 report7 report8  report9
+execute 'gdxxrw.exe results.gdx par=unem rng=UNEM!'
+execute 'gdxxrw.exe results.gdx par=Pwage rng=wage!'
+execute 'gdxxrw.exe results.gdx par=report1 rng=output!'
+execute 'gdxxrw.exe results.gdx par=report2 rng=emission!'
+execute 'gdxxrw.exe results.gdx par=report3 rng=input!'
+execute 'gdxxrw.exe results.gdx par=report4 rng=ffactor!'
+execute 'gdxxrw.exe results.gdx par=report5 rng=GDP!'
+execute 'gdxxrw.exe results.gdx par=report6 rng=labor!'
+execute 'gdxxrw.exe results.gdx par=report7 rng=capital!'
+execute 'gdxxrw.exe results.gdx par=report8 rng=ele_out!'
+execute 'gdxxrw.exe results.gdx par=report9 rng=ele_labor!'
+
+$offtext
