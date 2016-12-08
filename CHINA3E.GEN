@@ -265,25 +265,25 @@ PUT   MPS,'$MODEL:CHINA3E'/;
 {   87}      );
 {   87}    );
 {   87}    LOOP((FE)$(CLIM),
-{   87}      IF(ABS((EMISSION0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC))) GT MPSEPS,
+{   87}      IF(ABS((EMISSIONELEC0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC))) GT MPSEPS,
 {   87}        PUT /,'I:PCO2';
-{   87}        PUT /,'+Q:'(EMISSION0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC));
+{   87}        PUT /,'+Q:'(EMISSIONELEC0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC));
 {   87}        PUT /,'+P:'1E-5;
 {   87}        PUT /,'+',FE.TL,':';
 {   88}      );
 {   88}    );
 {   88}    LOOP((FE)$(CLIM_S("ELEC")),
-{   88}      IF(ABS((EMISSION0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC))) GT MPSEPS,
+{   88}      IF(ABS((EMISSIONELEC0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC))) GT MPSEPS,
 {   88}        PUT /,'I:PCO2_S''.ELEC';
-{   88}        PUT /,'+Q:'(EMISSION0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC));
+{   88}        PUT /,'+Q:'(EMISSIONELEC0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC));
 {   88}        PUT /,'+P:'1E-5;
 {   88}        PUT /,'+',FE.TL,':';
 {   89}      );
 {   89}    );
 {   89}    LOOP((FE)$(CLIM_A AND CM("ELEC")),
-{   89}      IF(ABS((EMISSION0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC))) GT MPSEPS,
+{   89}      IF(ABS((EMISSIONELEC0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC))) GT MPSEPS,
 {   89}        PUT /,'I:PCO2_A';
-{   89}        PUT /,'+Q:'(EMISSION0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC));
+{   89}        PUT /,'+Q:'(EMISSIONELEC0("CO2","E",FE,SUB_ELEC)*AEEI("ELEC")*EMKUP(SUB_ELEC));
 {   89}        PUT /,'+P:'1E-5;
 {   89}        PUT /,'+',FE.TL,':';
 {   90}      );
@@ -765,171 +765,180 @@ PUT   MPS,'$MODEL:CHINA3E'/;
  
  
  
-{  238}  PUT /;
  
-{  238}  IF (MPSREPORT,
-{  238}  PUT / '$REPORT:'/;
-{  240}  LOOP((J),
-{  240}    PUT /,'V:QDOUT''.'J.TL;
-{  240}    PUT '        ';
-{  240}    PUT'O:PY''.'J.TL;
-{  240}    PUT '        ';
-{  240}    PUT'PROD:Y''.'J.TL;
-{  240}  );
+{  244}  PUT /;
  
-{  242}  LOOP((I),
-{  242}    PUT /,'V:QC''.'I.TL;
-{  242}    PUT '        ';
-{  242}    PUT'I:PY''.'I.TL;
-{  242}    PUT '        ';
-{  242}    PUT'PROD:CONSUM';
-{  242}  );
+{  244}  IF (MPSREPORT,
+{  244}  PUT / '$REPORT:'/;
+{  246}  LOOP((J),
+{  246}    PUT /,'V:QDOUT''.'J.TL;
+{  246}    PUT '        ';
+{  246}    PUT'O:PY''.'J.TL;
+{  246}    PUT '        ';
+{  246}    PUT'PROD:Y''.'J.TL;
+{  246}  );
  
-{  243}  PUT /,'V:GROSSCONS';
-{  243}  PUT '        ';
-{  243}  PUT'O:PCONS';
-{  243}  PUT '        ';
-{  243}  PUT'PROD:CONSUM';
+{  248}  LOOP((I),
+{  248}    PUT /,'V:QC''.'I.TL;
+{  248}    PUT '        ';
+{  248}    PUT'I:PY''.'I.TL;
+{  248}    PUT '        ';
+{  248}    PUT'PROD:CONSUM';
+{  248}  );
  
-{  245}  LOOP((I),
-{  245}    PUT /,'V:QINVK''.'I.TL;
-{  245}    PUT '        ';
-{  245}    PUT'I:PY''.'I.TL;
-{  245}    PUT '        ';
-{  245}    PUT'PROD:INVEST';
-{  245}  );
- 
-{  246}  PUT /,'V:GROSSINVK';
-{  246}  PUT '        ';
-{  246}  PUT'O:PINV';
-{  246}  PUT '        ';
-{  246}  PUT'PROD:INVEST';
- 
-{  249}  PUT /,'V:UTIL';
+{  249}  PUT /,'V:GROSSCONS';
 {  249}  PUT '        ';
-{  249}  PUT'O:PU';
+{  249}  PUT'O:PCONS';
 {  249}  PUT '        ';
-{  249}  PUT'PROD:WELF';
+{  249}  PUT'PROD:CONSUM';
  
-{  251}  LOOP((I,J),
-{  251}    PUT /,'V:QIN''.'I.TL'.'J.TL;
+{  251}  LOOP((I),
+{  251}    PUT /,'V:QINVK''.'I.TL;
 {  251}    PUT '        ';
 {  251}    PUT'I:PY''.'I.TL;
 {  251}    PUT '        ';
-{  251}    PUT'PROD:Y''.'J.TL;
+{  251}    PUT'PROD:INVEST';
 {  251}  );
  
-{  252}  LOOP((I,SUB_ELEC),
-{  252}    PUT /,'V:QIN_ELE''.'I.TL'.'SUB_ELEC.TL;
-{  252}    PUT '        ';
-{  252}    PUT'I:PY''.'I.TL;
-{  252}    PUT '        ';
-{  252}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
-{  252}  );
+{  252}  PUT /,'V:GROSSINVK';
+{  252}  PUT '        ';
+{  252}  PUT'O:PINV';
+{  252}  PUT '        ';
+{  252}  PUT'PROD:INVEST';
  
-{  254}  LOOP((J),
-{  254}    PUT /,'V:QKIN''.'J.TL;
-{  254}    PUT '        ';
-{  254}    PUT'I:PK';
-{  254}    PUT '        ';
-{  254}    PUT'PROD:Y''.'J.TL;
-{  254}  );
+{  255}  PUT /,'V:UTIL';
+{  255}  PUT '        ';
+{  255}  PUT'O:PU';
+{  255}  PUT '        ';
+{  255}  PUT'PROD:WELF';
  
-{  255}  LOOP((J,LM),
-{  255}    PUT /,'V:QLIN''.'J.TL'.'LM.TL;
-{  255}    PUT '        ';
-{  255}    PUT'I:PL''.'J.TL'.'LM.TL;
-{  255}    PUT '        ';
-{  255}    PUT'PROD:Y''.'J.TL;
-{  255}  );
- 
-{  256}  LOOP((SUB_ELEC,LM),
-{  256}    PUT /,'V:QLIN_ELE''.'SUB_ELEC.TL'.'LM.TL;
-{  256}    PUT '        ';
-{  256}    PUT'I:PL''.ELEC''.'LM.TL;
-{  256}    PUT '        ';
-{  256}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
-{  256}  );
- 
-{  257}  LOOP((SUB_ELEC),
-{  257}    PUT /,'V:QKIN_ELE''.'SUB_ELEC.TL;
+{  257}  LOOP((I,J),
+{  257}    PUT /,'V:QIN''.'I.TL'.'J.TL;
 {  257}    PUT '        ';
-{  257}    PUT'I:PK';
+{  257}    PUT'I:PY''.'I.TL;
 {  257}    PUT '        ';
-{  257}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
+{  257}    PUT'PROD:Y''.'J.TL;
 {  257}  );
  
-{  258}  LOOP((J)$(X(J)),
-{  258}    PUT /,'V:QFFIN''.'J.TL;
+{  258}  LOOP((I,SUB_ELEC),
+{  258}    PUT /,'V:QIN_ELE''.'I.TL'.'SUB_ELEC.TL;
 {  258}    PUT '        ';
-{  258}    PUT'I:PFFACT''.'J.TL;
+{  258}    PUT'I:PY''.'I.TL;
 {  258}    PUT '        ';
-{  258}    PUT'PROD:Y''.'J.TL;
+{  258}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
 {  258}  );
  
-{  260}  LOOP((SUB_ELEC)$(CFE(SUB_ELEC)),
-{  260}    PUT /,'V:QFFELEC''.'SUB_ELEC.TL;
+{  260}  LOOP((J),
+{  260}    PUT /,'V:QKIN''.'J.TL;
 {  260}    PUT '        ';
-{  260}    PUT'I:PFFELEC''.'SUB_ELEC.TL;
+{  260}    PUT'I:PK';
 {  260}    PUT '        ';
-{  260}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
+{  260}    PUT'PROD:Y''.'J.TL;
 {  260}  );
  
-{  262}  LOOP((SUB_ELEC),
-{  262}    PUT /,'V:QELEC''.'SUB_ELEC.TL;
+{  261}  LOOP((J,LM),
+{  261}    PUT /,'V:QLIN''.'J.TL'.'LM.TL;
+{  261}    PUT '        ';
+{  261}    PUT'I:PL''.'J.TL'.'LM.TL;
+{  261}    PUT '        ';
+{  261}    PUT'PROD:Y''.'J.TL;
+{  261}  );
+ 
+{  262}  LOOP((SUB_ELEC,LM),
+{  262}    PUT /,'V:QLIN_ELE''.'SUB_ELEC.TL'.'LM.TL;
 {  262}    PUT '        ';
-{  262}    PUT'O:PELEC''.'SUB_ELEC.TL;
+{  262}    PUT'I:PL''.ELEC''.'LM.TL;
 {  262}    PUT '        ';
 {  262}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
 {  262}  );
  
-{  264}  LOOP((I),
-{  264}    PUT /,'V:ECO2''.'I.TL;
+{  263}  LOOP((SUB_ELEC),
+{  263}    PUT /,'V:QKIN_ELE''.'SUB_ELEC.TL;
+{  263}    PUT '        ';
+{  263}    PUT'I:PK';
+{  263}    PUT '        ';
+{  263}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
+{  263}  );
+ 
+{  264}  LOOP((J)$(X(J)),
+{  264}    PUT /,'V:QFFIN''.'J.TL;
 {  264}    PUT '        ';
-{  264}    PUT'I:PCO2';
+{  264}    PUT'I:PFFACT''.'J.TL;
 {  264}    PUT '        ';
-{  264}    PUT'PROD:Y''.'I.TL;
+{  264}    PUT'PROD:Y''.'J.TL;
 {  264}  );
  
-{  265}  LOOP((I),
-{  265}    PUT /,'V:ECO2_S''.'I.TL;
-{  265}    PUT '        ';
-{  265}    PUT'I:PCO2_S''.'I.TL;
-{  265}    PUT '        ';
-{  265}    PUT'PROD:Y''.'I.TL;
-{  265}  );
- 
-{  266}  LOOP((SUB_ELEC),
-{  266}    PUT /,'V:ECO2_SE''.'SUB_ELEC.TL;
+{  266}  LOOP((SUB_ELEC)$(CFE(SUB_ELEC)),
+{  266}    PUT /,'V:QFFELEC''.'SUB_ELEC.TL;
 {  266}    PUT '        ';
-{  266}    PUT'I:PCO2_S''.ELEC';
+{  266}    PUT'I:PFFELEC''.'SUB_ELEC.TL;
 {  266}    PUT '        ';
 {  266}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
 {  266}  );
  
-{  267}  PUT /,'V:ECO2_H';
-{  267}  PUT '        ';
-{  267}  PUT'I:PCO2_H';
-{  267}  PUT '        ';
-{  267}  PUT'PROD:CONSUM';
+{  268}  LOOP((SUB_ELEC),
+{  268}    PUT /,'V:QELEC''.'SUB_ELEC.TL;
+{  268}    PUT '        ';
+{  268}    PUT'O:PELEC''.'SUB_ELEC.TL;
+{  268}    PUT '        ';
+{  268}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
+{  268}  );
  
-{  269}  LOOP((SUB_ELEC),
-{  269}    PUT /,'V:DPERMITS''.'SUB_ELEC.TL;
-{  269}    PUT '        ';
-{  269}    PUT'I:PERS';
-{  269}    PUT '        ';
-{  269}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
-{  269}  );
- 
-{  270}  LOOP((SUB_ELEC),
-{  270}    PUT /,'V:SPERMITS''.'SUB_ELEC.TL;
+{  270}  LOOP((I),
+{  270}    PUT /,'V:ECO2''.'I.TL;
 {  270}    PUT '        ';
-{  270}    PUT'O:PERS';
+{  270}    PUT'I:PCO2';
 {  270}    PUT '        ';
-{  270}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
+{  270}    PUT'PROD:Y''.'I.TL;
 {  270}  );
  
+{  271}  LOOP((SUB_ELEC),
+{  271}    PUT /,'V:ECO2_ELEC''.'SUB_ELEC.TL;
+{  271}    PUT '        ';
+{  271}    PUT'I:PCO2';
+{  271}    PUT '        ';
+{  271}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
+{  271}  );
+ 
+{  272}  LOOP((I),
+{  272}    PUT /,'V:ECO2_S''.'I.TL;
+{  272}    PUT '        ';
+{  272}    PUT'I:PCO2_S''.'I.TL;
+{  272}    PUT '        ';
+{  272}    PUT'PROD:Y''.'I.TL;
+{  272}  );
+ 
+{  273}  LOOP((SUB_ELEC),
+{  273}    PUT /,'V:ECO2_S_ELEC''.'SUB_ELEC.TL;
+{  273}    PUT '        ';
+{  273}    PUT'I:PCO2_S''.ELEC';
+{  273}    PUT '        ';
+{  273}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
 {  273}  );
+ 
+{  274}  PUT /,'V:ECO2_H';
+{  274}  PUT '        ';
+{  274}  PUT'I:PCO2_H';
+{  274}  PUT '        ';
+{  274}  PUT'PROD:CONSUM';
+ 
+{  276}  LOOP((SUB_ELEC),
+{  276}    PUT /,'V:DPERMITS''.'SUB_ELEC.TL;
+{  276}    PUT '        ';
+{  276}    PUT'I:PERS';
+{  276}    PUT '        ';
+{  276}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
+{  276}  );
+ 
+{  277}  LOOP((SUB_ELEC),
+{  277}    PUT /,'V:SPERMITS''.'SUB_ELEC.TL;
+{  277}    PUT '        ';
+{  277}    PUT'O:PERS';
+{  277}    PUT '        ';
+{  277}    PUT'PROD:YELEC''.'SUB_ELEC.TL;
+{  277}  );
+ 
+{  280}  );
  
 OPTION LIMROW=0;
 OPTION LIMCOL=0;
@@ -937,6 +946,6 @@ PUT / '$PEPS:1.E-6'/;
 PUT / '$SOLVE'/;
 PUTCLOSE   MPS;
 CHINA3E.INTEGER1 = CHINA3E.INTEGER1 + 1;
-$IF %CHINA3E%=="12/07/1615:09:46" $EXIT
+$IF %CHINA3E%=="12/07/1616:07:33" $EXIT
 $error model.gen file is inconsistent
 $abort preprocessor must be reinvoked

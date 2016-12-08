@@ -1,8 +1,8 @@
 
 *----------------------------------------------*
 *setup benchmark Emission
-*20151215        ¸ù¾ÝEPPA·½·¨£¬Êý¾Ý£¬ÄÜÔ´Æ½ºâ±í£¬Í¶Èë²ú³ö±í¸üÐÂ2010ÄêÅÅ·ÅÊý¾Ý£¬È·¶¨ÅÅ·ÅÏµÊý
-*20161201        ¸ù¾ÝEPPA·½·¨£¬Êý¾Ý£¬ÄÜÔ´Æ½ºâ±í£¬Í¶Èë²ú³ö±í¸üÐÂ2012ÄêÅÅ·ÅÊý¾Ý£¬È·¶¨ÅÅ·ÅÏµÊý
+*20151215        ï¿½ï¿½ï¿½ï¿½EPPAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Ô´Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2010ï¿½ï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½Ý£ï¿½È·ï¿½ï¿½ï¿½Å·ï¿½Ïµï¿½ï¿½
+*20161201        ï¿½ï¿½ï¿½ï¿½EPPAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Ô´Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2012ï¿½ï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½Ý£ï¿½È·ï¿½ï¿½ï¿½Å·ï¿½Ïµï¿½ï¿½
 *----------------------------------------------*
 
 *== CO2 emission data
@@ -25,18 +25,18 @@ parameter emission0(pollutant,pitem,*,*)  sectoral emission by source
 
 parameter
 epslon        coefficient of carbon contents (100M tons per EJ)
-eet1          energy consumption in Íò¶Ö±ê×¼Ãº      µÈÐ§ÃººÄ
-eet2          energy consumption in Íò¶Ö±ê×¼Ãº      ÈÈµ±Á¿
+eet1          energy consumption in ï¿½ï¿½ï¿½Ö±ï¿½×¼Ãº      ï¿½ï¿½Ð§Ãºï¿½ï¿½
+eet2          energy consumption in ï¿½ï¿½ï¿½Ö±ï¿½×¼Ãº      ï¿½Èµï¿½ï¿½ï¿½
 eej           energy consumption in EJ
 eeg           energy goods consumption in billion yuan  except energy as feedstock input
 eeg_s         energy goods consumption in billion yuan  except energy as feedstock input by sector
-co2f          co2 emission by fuel in 100 million tons(ÒÚ¶Ö)
+co2f          co2 emission by fuel in 100 million tons(ï¿½Ú¶ï¿½)
 
 r_feed(fe,i)   adjusted Feedstocks use ratio of fuels by pertrochemistry sector
 b_CO2(fe)      IEA CO2 emissions 2012 (Billion tonnes)
 cj            adjust factor for epslon to match IEA baseline
 
-ecoef         energy coefficient (Íò¶Ö±ê×¼Ãº per billion yuan)   energy from quantity of value to physical
+ecoef         energy coefficient (ï¿½ï¿½ï¿½Ö±ï¿½×¼Ãº per billion yuan)   energy from quantity of value to physical
 ccoef_P       carbon coefficient of production(billion T per Billion yuan)
 ccoef_h       carbon coefficient of consumption(billion T per Billion yuan)
 ;
@@ -72,7 +72,7 @@ r_feed("coal","chem") = 0.267979697;
 r_feed("roil","chem") = 0.595631707;
 
 *== Switch for feedstocks
-r_feed(fe,i) =0;
+*r_feed(fe,i) =0;
 
 eeg_s(fe,i)        =       int0(fe,i)*(1-r_feed(fe,i));
 eeg_s(fe,"cons")   =       cons0(fe);

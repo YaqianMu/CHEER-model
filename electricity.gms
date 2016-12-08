@@ -134,6 +134,11 @@ costelec0(sub_elec) =outputelec0(sub_elec)/egen_data("Gwh",sub_elec)*1000;
 
 outputelec0(sub_elec)=egen_data("Gwh",sub_elec)/1000;
 
+*== set emission for electricity sector
+parameter emissionelec0(pollutant,pitem,*,*)  electricity emission by source ;
+
+emissionelec0('co2','e',fe,sub_elec)=ccoef_p(fe)*intelec0(fe,sub_elec)*(1-r_feed(fe,"elec"));
+
 
 
 
@@ -145,4 +150,4 @@ esub("wind","ff")=0.25;
 *esub(sub_elec,"ff")=0.4;
 
 
-display costelec0,outputelec0,esub;
+display costelec0,outputelec0,esub,emissionelec0;

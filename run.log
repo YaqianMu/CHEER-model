@@ -1,5 +1,5 @@
 
---- Job run.gms Start 12/07/16 15:09:46 24.4.6 r52609 WEX-WEI x86 64bit/MS Windows
+--- Job run.gms Start 12/07/16 16:07:33 24.4.6 r52609 WEX-WEI x86 64bit/MS Windows
 GAMS 24.4.6   Copyright (C) 1987-2015 GAMS Development. All rights reserved
 Licensee: Yaqian Mu                                      G150107:0436AO-WIN
           Tsinghua University, Res. Centre for International EnvironmDC6727
@@ -12,7 +12,7 @@ Licensee: Yaqian Mu                                      G150107:0436AO-WIN
 GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
 Input file : C:\Users\hero\Desktop\Github\CHEER-model\data.xlsx
 Output file: C:\Users\hero\Desktop\Github\CHEER-model\data.gdx
-Total time = 1234 Ms
+Total time = 1422 Ms
 --- .sets.gms(114) 3 Mb
 --- GDXin=C:\Users\hero\Desktop\Github\CHEER-model\data.gdx
 --- .sets.gms(251) 3 Mb
@@ -27,10 +27,10 @@ Total time = 1234 Ms
 GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
 Input file : C:\Users\hero\Desktop\Github\CHEER-model\elec.xlsx
 Output file: C:\Users\hero\Desktop\Github\CHEER-model\elec.gdx
-Total time = 1172 Ms
+Total time = 1328 Ms
 --- .electricity.gms(11) 3 Mb
 --- GDXin=C:\Users\hero\Desktop\Github\CHEER-model\elec.gdx
---- .electricity.gms(148) 3 Mb
+--- .electricity.gms(153) 3 Mb
 --- run.gms(7) 3 Mb
 --- .ist.gms(4) 3 Mb
 --- call GDXXRW.EXE ist.xlsx par=isprop rng=A1:C29
@@ -38,7 +38,7 @@ Total time = 1172 Ms
 GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
 Input file : C:\Users\hero\Desktop\Github\CHEER-model\ist.xlsx
 Output file: C:\Users\hero\Desktop\Github\CHEER-model\ist.gdx
-Total time = 1656 Ms
+Total time = 1796 Ms
 --- .ist.gms(7) 3 Mb
 --- GDXin=C:\Users\hero\Desktop\Github\CHEER-model\ist.gdx
 --- .ist.gms(48) 3 Mb
@@ -49,7 +49,7 @@ Total time = 1656 Ms
 GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
 Input file : C:\Users\hero\Desktop\Github\CHEER-model\labor.xlsx
 Output file: C:\Users\hero\Desktop\Github\CHEER-model\labor.gdx
-Total time = 1172 Ms
+Total time = 1360 Ms
 --- .labor market.gms(60) 3 Mb
 --- GDXin=C:\Users\hero\Desktop\Github\CHEER-model\labor.gdx
 --- .labor market.gms(301) 3 Mb
@@ -62,34 +62,30 @@ Total time = 1172 Ms
 GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
 Input file : C:\Users\hero\Desktop\Github\CHEER-model\trend.xlsx
 Output file: C:\Users\hero\Desktop\Github\CHEER-model\trend.gdx
-Total time = 1391 Ms
+Total time = 1579 Ms
 --- .trend.gms(12) 3 Mb
 --- GDXin=C:\Users\hero\Desktop\Github\CHEER-model\trend.gdx
 --- .trend.gms(70) 3 Mb
 --- run.gms(13) 3 Mb
---- .core_1207.gms(290) 3 Mb
+--- .core_1207.gms(297) 3 Mb
 --- Running the MPSGE preprocessor ...
 --- ..mpsgeset(19) 3 Mb
 --- call gmsge_nx "C:\Users\hero\Desktop\Github\CHEER-model\225a\gamscge.dat"
 --- ..mpsgeset(20) 3 Mb
---- ...gamsgeh.dat(639) 3 Mb
+--- ...gamsgeh.dat(655) 3 Mb
 --- ..mpsgeset(22) 3 Mb
---- .core_1207.gms(345) 3 Mb
---- ..China3E.gen(940) 3 Mb
---- .core_1207.gms(371) 3 Mb
---- run.gms(19) 3 Mb
---- .dynamic.gms(147) 3 Mb
---- ..China3E.gen(940) 3 Mb
---- .dynamic.gms(228) 3 Mb
+--- .core_1207.gms(351) 3 Mb
+--- ..China3E.gen(949) 3 Mb
+--- .core_1207.gms(384) 3 Mb
 --- run.gms(26) 3 Mb
---- Starting execution: elapsed 0:00:07.201
---- run.gms(3065) 4 Mb
+--- Starting execution: elapsed 0:00:08.208
+--- run.gms(3101) 4 Mb
 --- Generating MCP model CHINA3E
---- run.gms(3068) 7 Mb
----   20 rows  838 columns  906 non-zeroes
----   120 nl-code  32 nl-non-zeroes
---- run.gms(3068) 4 Mb
---- Executing MPSGE: elapsed 0:00:07.228
+--- run.gms(3104) 7 Mb
+---   21 rows  849 columns  916 non-zeroes
+---   106 nl-code  29 nl-non-zeroes
+--- run.gms(3104) 4 Mb
+--- Executing MPSGE: elapsed 0:00:08.246
 
 MPSGE: Extracting Jacobian nonzero structure.
 
@@ -102,484 +98,73 @@ Calculating Jacobian...
 
 PATH             24.4.6 r52609 Released Jun 26, 2015 WEI x86 64bit/MS Windows 
 
-130 row/cols, 3494 non-zeros, 20.67% dense.
+132 row/cols, 3654 non-zeros, 20.97% dense.
 
 Path 4.7.02 (Fri Jun 26 15:39:32 2015)
 Written by Todd Munson, Steven Dirkse, and Michael Ferris
 
-MCPR: Zero:     0 Single:     4 Double:     0 Forced:     0
-Preprocessed size   : 126
+MCPR: Zero:     0 Single:     5 Double:     0 Forced:     0
+Preprocessed size   : 127
 
 INITIAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  7.6843e+005 var: (RA)
-Maximum of F. . . . . . . . . .  3.1153e+005 eqn: (Y.Agri)
+Maximum of X. . . . . . . . . .  7.6852e+005 var: (RA)
+Maximum of F. . . . . . . . . .  3.1154e+005 eqn: (Y.Agri)
 Maximum of Grad F . . . . . . .  6.6256e+005 eqn: (RA)
                                             var: (PLS.low)
 
 INITIAL JACOBIAN NORM STATISTICS
 Maximum Row Norm. . . . . . . .  1.5242e+006 eqn: (RA)
-Minimum Row Norm. . . . . . . .  1.1000e+000 eqn: (SFFELEC.Hydro)
+Minimum Row Norm. . . . . . . .  1.0000e+000 eqn: (UR.low)
 Maximum Column Norm . . . . . .  1.3867e+006 var: (L_A.low)
 Minimum Column Norm . . . . . .  1.0000e+000 var: (RGDP)
 
 Major Iteration Log
 major minor  func  grad  residual    step  type prox    inorm  (label)
     0     0     1     1 2.3631e+005           I 0.0e+000 2.0e+005 (L_A.low)
-    1    39     3     2 4.3572e+004  8.0e-001 SB 0.0e+000 4.1e+004 (L_A.low)
-    2     3     4     3 7.7325e+005  1.0e+000 SO 0.0e+000 7.7e+005 (PL.Agri.low)
-    3     4     5     4 8.3085e+005  1.0e+000 SO 0.0e+000 8.3e+005 (PL.Agri.low)
-    4     3     6     5 2.6965e+005  1.0e+000 SO 0.0e+000 2.7e+005 (PL.Agri.low)
-    5     1     7     6 1.1337e+004  1.0e+000 SO 0.0e+000 8.1e+003 (PL.Serv.low)
-    6     1     8     7 8.8687e+002  1.0e+000 SO 0.0e+000 8.1e+002 (PL.Serv.low)
-    7     1     9     8 1.4257e+000  1.0e+000 SO 0.0e+000 1.2e+000 (PL.Serv.low)
-    8     1    10     9 6.2810e-006  1.0e+000 SO 0.0e+000 5.4e-006 (PL.Agri.low)
-    9     1    11    10 1.5512e-008  1.0e+000 SO 0.0e+000 1.5e-008 (PL.Agri.low)
+    1    44     3     2 4.8587e+004  8.0e-001 SB 0.0e+000 4.5e+004 (L_A.low)
+    2     4     4     3 4.4235e+005  1.0e+000 SO 0.0e+000 4.4e+005 (PL.Agri.low)
+    3     3     5     4 8.2076e+004  1.0e+000 SO 0.0e+000 6.3e+004 (PL.Agri.low)
+    4     1     6     5 6.8328e+004  1.0e+000 SO 0.0e+000 6.5e+004 (PL.Agri.low)
+    5     2     7     6 2.8196e+003  1.0e+000 SO 0.0e+000 2.0e+003 (PL.Tran.low)
+    6     1     8     7 9.4326e+002  1.0e+000 SO 0.0e+000 9.4e+002 (PELEC.Hydro)
+    7     1     9     8 2.9416e+001  1.0e+000 SO 0.0e+000 2.6e+001 (PELEC.Biomass)
+    8     1    10     9 2.3241e+001  1.0e+000 SO 0.0e+000 2.3e+001 (PELEC.Nuclear)
+    9     1    11    10 1.7532e+000  1.0e+000 SO 0.0e+000 1.6e+000 (PELEC.Nuclear)
+   10     1    12    11 1.1516e-002  1.0e+000 SO 0.0e+000 9.8e-003 (PELEC.Hydro)
+   11     1    13    12 2.4043e-007  1.0e+000 SO 0.0e+000 2.0e-007 (PELEC.Hydro)
 
 FINAL STATISTICS
-Inf-Norm of Complementarity . .  3.9057e-007 eqn: (RGDP)
-Inf-Norm of Normal Map. . . . .  1.5192e-008 eqn: (PL.Agri.low)
-Inf-Norm of Minimum Map . . . .  1.5192e-008 eqn: (PL.Agri.low)
-Inf-Norm of Fischer Function. .  1.5192e-008 eqn: (PL.Agri.low)
-Inf-Norm of Grad Fischer Fcn. .  2.4880e-001 eqn: (PL.Agri.low)
-Two-Norm of Grad Fischer Fcn. .  2.5301e-001
+Inf-Norm of Complementarity . .  1.5194e-007 eqn: (PELEC.Hydro)
+Inf-Norm of Normal Map. . . . .  2.0324e-007 eqn: (PELEC.Hydro)
+Inf-Norm of Minimum Map . . . .  2.0324e-007 eqn: (PELEC.Hydro)
+Inf-Norm of Fischer Function. .  2.0324e-007 eqn: (PELEC.Hydro)
+Inf-Norm of Grad Fischer Fcn. .  5.0085e-001 eqn: (PL.Agri.low)
+Two-Norm of Grad Fischer Fcn. .  5.1010e-001
 
 FINAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  5.3680e+004 var: (RGDP)
-Maximum of F. . . . . . . . . .  1.5192e-008 eqn: (PL.Agri.low)
+Maximum of X. . . . . . . . . .  1.0686e+005 var: (RA)
+Maximum of F. . . . . . . . . .  2.3388e+000 eqn: (PCO2)
 Maximum of Grad F . . . . . . .  1.6435e+007 eqn: (PL.Agri.low)
                                             var: (PL.Agri.low)
 
  ** EXIT - solution found.
 
-Major Iterations. . . . 9
-Minor Iterations. . . . 54
+Major Iterations. . . . 11
+Minor Iterations. . . . 60
 Restarts. . . . . . . . 0
 Crash Iterations. . . . 0
 Gradient Steps. . . . . 0
-Function Evaluations. . 11
-Gradient Evaluations. . 10
-Total Time. . . . . . . 0.076000
-Residual. . . . . . . . 1.551218e-008
-Postsolved residual: 1.5512e-008
+Function Evaluations. . 13
+Gradient Evaluations. . 12
+Total Time. . . . . . . 0.118000
+Residual. . . . . . . . 2.404259e-007
+Postsolved residual: 2.4043e-007
 
 --- Restarting execution
---- run.gms(3068) 2 Mb
+--- run.gms(3104) 2 Mb
 --- Reading solution for model CHINA3E
---- Executing after solve: elapsed 0:00:07.696
---- run.gms(3221) 3 Mb
---- Generating MCP model CHINA3E
---- run.gms(4189) 5 Mb
---- LOOPS t = 2010
----   20 rows  838 columns  906 non-zeroes
----   120 nl-code  32 nl-non-zeroes
---- run.gms(4189) 3 Mb
---- Executing MPSGE: elapsed 0:00:07.713
-
-MPSGE: Extracting Jacobian nonzero structure.
-
---- Executing MCP subsolver PATH
-Reading dictionary...
-Reading row data...
-Evaluating functions...
-Checking model...
-Calculating Jacobian...
-
-PATH             24.4.6 r52609 Released Jun 26, 2015 WEI x86 64bit/MS Windows 
-
-130 row/cols, 3494 non-zeros, 20.67% dense.
-
-Path 4.7.02 (Fri Jun 26 15:39:32 2015)
-Written by Todd Munson, Steven Dirkse, and Michael Ferris
-
-MCPR: Zero:     0 Single:     4 Double:     0 Forced:     0
-Preprocessed size   : 126
-
-INITIAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  5.3680e+004 var: (RGDP)
-Maximum of F. . . . . . . . . .  1.5192e-008 eqn: (PL.Agri.low)
-Maximum of Grad F . . . . . . .  1.6435e+007 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
-INITIAL JACOBIAN NORM STATISTICS
-Maximum Row Norm. . . . . . . .  2.2577e+007 eqn: (PL.Agri.low)
-Minimum Row Norm. . . . . . . .  1.1000e+000 eqn: (SFFELEC.Hydro)
-Maximum Column Norm . . . . . .  2.2577e+007 var: (PL.Agri.low)
-Minimum Column Norm . . . . . .  1.0000e+000 var: (RGDP)
-
-Major Iteration Log
-major minor  func  grad  residual    step  type prox    inorm  (label)
-    0     0     1     1 1.5512e-008           I 0.0e+000 1.5e-008 (PL.Agri.low)
-
-FINAL STATISTICS
-Inf-Norm of Complementarity . .  3.9057e-007 eqn: (RGDP)
-Inf-Norm of Normal Map. . . . .  1.5192e-008 eqn: (PL.Agri.low)
-Inf-Norm of Minimum Map . . . .  1.5192e-008 eqn: (PL.Agri.low)
-Inf-Norm of Fischer Function. .  1.5192e-008 eqn: (PL.Agri.low)
-Inf-Norm of Grad Fischer Fcn. .  2.4880e-001 eqn: (PL.Agri.low)
-Two-Norm of Grad Fischer Fcn. .  2.5301e-001
-
-FINAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  5.3680e+004 var: (RGDP)
-Maximum of F. . . . . . . . . .  1.5192e-008 eqn: (PL.Agri.low)
-Maximum of Grad F . . . . . . .  1.6435e+007 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
- ** EXIT - solution found.
-
-Major Iterations. . . . 0
-Minor Iterations. . . . 0
-Restarts. . . . . . . . 0
-Crash Iterations. . . . 0
-Gradient Steps. . . . . 0
-Function Evaluations. . 1
-Gradient Evaluations. . 1
-Total Time. . . . . . . 0.068000
-Residual. . . . . . . . 1.551218e-008
-Postsolved residual: 1.5512e-008
-
---- Restarting execution
---- run.gms(4189) 2 Mb
---- Reading solution for model CHINA3E
---- Executing after solve: elapsed 0:00:08.042
---- run.gms(3221) 3 Mb
---- Generating MCP model CHINA3E
---- run.gms(4189) 5 Mb
---- LOOPS t = 2015
----   20 rows  838 columns  906 non-zeroes
----   120 nl-code  32 nl-non-zeroes
---- run.gms(4189) 3 Mb
---- Executing MPSGE: elapsed 0:00:08.058
-
-MPSGE: Extracting Jacobian nonzero structure.
-
---- Executing MCP subsolver PATH
-Reading dictionary...
-Reading row data...
-Evaluating functions...
-Checking model...
-Calculating Jacobian...
-
-PATH             24.4.6 r52609 Released Jun 26, 2015 WEI x86 64bit/MS Windows 
-
-130 row/cols, 3494 non-zeros, 20.67% dense.
-
-Path 4.7.02 (Fri Jun 26 15:39:32 2015)
-Written by Todd Munson, Steven Dirkse, and Michael Ferris
-
-MCPR: Zero:     0 Single:     4 Double:     0 Forced:     0
-Preprocessed size   : 126
-
-INITIAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  7.4480e+004 var: (RA)
-Maximum of F. . . . . . . . . .  1.6856e+005 eqn: (PLS.low)
-Maximum of Grad F . . . . . . .  1.6420e+007 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
-INITIAL JACOBIAN NORM STATISTICS
-Maximum Row Norm. . . . . . . .  2.2562e+007 eqn: (PL.Agri.low)
-Minimum Row Norm. . . . . . . .  1.1000e+000 eqn: (SFFELEC.Hydro)
-Maximum Column Norm . . . . . .  2.2562e+007 var: (PL.Agri.low)
-Minimum Column Norm . . . . . .  1.0000e+000 var: (RGDP)
-
-Major Iteration Log
-major minor  func  grad  residual    step  type prox    inorm  (label)
-    0     0     1     1 3.3052e+002           I 0.0e+000 2.0e+002 (Y.EII)
-    1     1     8     2 8.0341e+002  1.3e-001 SB 0.0e+000 7.4e+002 (PL.Agri.low)
-    2     1    14     3 1.4397e+003  2.1e-001 SB 0.0e+000 1.4e+003 (PL.Agri.low)
-    3     1    15     4 6.8429e+003  1.0e+000 SD 0.0e+000 4.9e+003 (PL.Agri.low)
-    4     1    16     5 3.6398e+002  1.0e+000 SO 0.0e+000 3.6e+002 (PK)
-    5     1    17     6 2.8450e+000  1.0e+000 SO 0.0e+000 2.4e+000 (PL.Agri.low)
-    6     1    18     7 4.3946e-005  1.0e+000 SO 0.0e+000 2.9e-005 (PK)
-    7     1    19     8 2.7226e-009  1.0e+000 SO 0.0e+000 1.9e-009 (PL.Agri.low)
-
-FINAL STATISTICS
-Inf-Norm of Complementarity . .  1.3970e-009 eqn: (PL.OM.low)
-Inf-Norm of Normal Map. . . . .  1.9209e-009 eqn: (PL.Agri.low)
-Inf-Norm of Minimum Map . . . .  1.9209e-009 eqn: (PL.Agri.low)
-Inf-Norm of Fischer Function. .  1.9209e-009 eqn: (PL.Agri.low)
-Inf-Norm of Grad Fischer Fcn. .  2.6712e-002 eqn: (PL.Agri.low)
-Two-Norm of Grad Fischer Fcn. .  2.7620e-002
-
-FINAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  7.7208e+004 var: (RGDP)
-Maximum of F. . . . . . . . . .  4.6175e-001 eqn: (UR.low)
-Maximum of Grad F . . . . . . .  1.2936e+007 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
- ** EXIT - solution found.
-
-Major Iterations. . . . 7
-Minor Iterations. . . . 7
-Restarts. . . . . . . . 0
-Crash Iterations. . . . 0
-Gradient Steps. . . . . 0
-Function Evaluations. . 19
-Gradient Evaluations. . 8
-Total Time. . . . . . . 0.050000
-Residual. . . . . . . . 2.722607e-009
-Postsolved residual: 2.7226e-009
-
---- Restarting execution
---- run.gms(4189) 2 Mb
---- Reading solution for model CHINA3E
---- Executing after solve: elapsed 0:00:08.405
---- run.gms(3221) 3 Mb
---- Generating MCP model CHINA3E
---- run.gms(4189) 5 Mb
---- LOOPS t = 2020
----   20 rows  838 columns  906 non-zeroes
----   120 nl-code  32 nl-non-zeroes
---- run.gms(4189) 3 Mb
---- Executing MPSGE: elapsed 0:00:08.420
-
-MPSGE: Extracting Jacobian nonzero structure.
-
---- Executing MCP subsolver PATH
-Reading dictionary...
-Reading row data...
-Evaluating functions...
-Checking model...
-Calculating Jacobian...
-
-PATH             24.4.6 r52609 Released Jun 26, 2015 WEI x86 64bit/MS Windows 
-
-130 row/cols, 3494 non-zeros, 20.67% dense.
-
-Path 4.7.02 (Fri Jun 26 15:39:32 2015)
-Written by Todd Munson, Steven Dirkse, and Michael Ferris
-
-MCPR: Zero:     0 Single:     4 Double:     0 Forced:     0
-Preprocessed size   : 126
-
-INITIAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  1.0366e+005 var: (RA)
-Maximum of F. . . . . . . . . .  1.4267e+005 eqn: (PLS.low)
-Maximum of Grad F . . . . . . .  1.2926e+007 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
-INITIAL JACOBIAN NORM STATISTICS
-Maximum Row Norm. . . . . . . .  1.8579e+007 eqn: (PL.Agri.low)
-Minimum Row Norm. . . . . . . .  1.0584e+000 eqn: (SFFELEC.Hydro)
-Maximum Column Norm . . . . . .  1.8579e+007 var: (PL.Agri.low)
-Minimum Column Norm . . . . . .  1.0000e+000 var: (RGDP)
-
-Major Iteration Log
-major minor  func  grad  residual    step  type prox    inorm  (label)
-    0     0     1     1 4.5277e+002           I 0.0e+000 2.7e+002 (PL.Agri.low)
-    1     1     8     2 1.4394e+003  1.3e-001 SB 0.0e+000 1.4e+003 (PL.Agri.low)
-    2     1    15     3 1.7827e+003  1.3e-001 SB 0.0e+000 1.7e+003 (PL.Agri.low)
-    3     1    22     4 1.8222e+003  1.3e-001 SB 0.0e+000 1.8e+003 (PL.Agri.low)
-    4     1    23     5 1.7353e+004  1.0e+000 SD 0.0e+000 1.6e+004 (PK)
-    5     1    24     6 2.0522e+003  1.0e+000 SD 0.0e+000 2.0e+003 (PK)
-    6     1    25     7 3.8151e+001  1.0e+000 SO 0.0e+000 3.6e+001 (PK)
-    7     1    26     8 7.0457e-003  1.0e+000 SO 0.0e+000 6.2e-003 (PK)
-    8     1    27     9 2.4678e-009  1.0e+000 SO 0.0e+000 1.5e-009 (PL.Serv.low)
-
-FINAL STATISTICS
-Inf-Norm of Complementarity . .  1.8721e-006 eqn: (RGDP)
-Inf-Norm of Normal Map. . . . .  1.4552e-009 eqn: (PL.Serv.low)
-Inf-Norm of Minimum Map . . . .  1.4552e-009 eqn: (PL.Serv.low)
-Inf-Norm of Fischer Function. .  1.4552e-009 eqn: (PL.Serv.low)
-Inf-Norm of Grad Fischer Fcn. .  1.1814e-002 eqn: (PL.Agri.low)
-Two-Norm of Grad Fischer Fcn. .  1.2910e-002
-
-FINAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  1.0357e+005 var: (RGDP)
-Maximum of F. . . . . . . . . .  1.0760e+000 eqn: (UR.low)
-Maximum of Grad F . . . . . . .  9.5807e+006 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
- ** EXIT - solution found.
-
-Major Iterations. . . . 8
-Minor Iterations. . . . 8
-Restarts. . . . . . . . 0
-Crash Iterations. . . . 0
-Gradient Steps. . . . . 0
-Function Evaluations. . 27
-Gradient Evaluations. . 9
-Total Time. . . . . . . 0.170000
-Residual. . . . . . . . 2.467778e-009
-Postsolved residual: 2.4678e-009
-
---- Restarting execution
---- run.gms(4189) 2 Mb
---- Reading solution for model CHINA3E
---- Executing after solve: elapsed 0:00:08.877
---- run.gms(3221) 3 Mb
---- Generating MCP model CHINA3E
---- run.gms(4189) 5 Mb
---- LOOPS t = 2025
----   20 rows  838 columns  906 non-zeroes
----   120 nl-code  32 nl-non-zeroes
---- run.gms(4189) 3 Mb
---- Executing MPSGE: elapsed 0:00:08.896
-
-MPSGE: Extracting Jacobian nonzero structure.
-
---- Executing MCP subsolver PATH
-Reading dictionary...
-Reading row data...
-Evaluating functions...
-Checking model...
-Calculating Jacobian...
-
-PATH             24.4.6 r52609 Released Jun 26, 2015 WEI x86 64bit/MS Windows 
-
-130 row/cols, 3494 non-zeros, 20.67% dense.
-
-Path 4.7.02 (Fri Jun 26 15:39:32 2015)
-Written by Todd Munson, Steven Dirkse, and Michael Ferris
-
-MCPR: Zero:     0 Single:     4 Double:     0 Forced:     0
-Preprocessed size   : 126
-
-INITIAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  1.2840e+005 var: (RA)
-Maximum of F. . . . . . . . . .  1.3043e+005 eqn: (PLS.low)
-Maximum of Grad F . . . . . . .  9.5748e+006 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
-INITIAL JACOBIAN NORM STATISTICS
-Maximum Row Norm. . . . . . . .  1.4549e+007 eqn: (PL.Agri.low)
-Minimum Row Norm. . . . . . . .  1.0460e+000 eqn: (SFFELEC.Hydro)
-Maximum Column Norm . . . . . .  1.4549e+007 var: (PL.Agri.low)
-Minimum Column Norm . . . . . .  1.0000e+000 var: (RGDP)
-
-Major Iteration Log
-major minor  func  grad  residual    step  type prox    inorm  (label)
-    0     0     1     1 6.8111e+002           I 0.0e+000 5.9e+002 (PL.Agri.low)
-    1     1     6     2 2.9083e+003  3.3e-001 SB 0.0e+000 2.9e+003 (PL.Agri.low)
-    2     1     7     3 1.9751e+004  1.0e+000 SD 0.0e+000 2.0e+004 (PK)
-    3     1     8     4 1.9204e+003  1.0e+000 SO 0.0e+000 1.9e+003 (PK)
-    4     1     9     5 1.9922e+001  1.0e+000 SO 0.0e+000 2.0e+001 (PK)
-    5     1    10     6 1.1640e-003  1.0e+000 SO 0.0e+000 1.1e-003 (PK)
-    6     1    11     7 5.2228e-009  1.0e+000 SO 0.0e+000 4.1e-009 (PL.Serv.low)
-
-FINAL STATISTICS
-Inf-Norm of Complementarity . .  2.3283e-009 eqn: (PL.Agri.low)
-Inf-Norm of Normal Map. . . . .  4.1327e-009 eqn: (PL.Serv.low)
-Inf-Norm of Minimum Map . . . .  4.1327e-009 eqn: (PL.Serv.low)
-Inf-Norm of Fischer Function. .  4.1327e-009 eqn: (PL.Serv.low)
-Inf-Norm of Grad Fischer Fcn. .  2.4696e-002 eqn: (PL.Agri.low)
-Two-Norm of Grad Fischer Fcn. .  2.8001e-002
-
-FINAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  1.2846e+005 var: (RGDP)
-Maximum of F. . . . . . . . . .  1.5801e+000 eqn: (UR.low)
-Maximum of Grad F . . . . . . .  8.0056e+006 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
- ** EXIT - solution found.
-
-Major Iterations. . . . 6
-Minor Iterations. . . . 6
-Restarts. . . . . . . . 0
-Crash Iterations. . . . 0
-Gradient Steps. . . . . 0
-Function Evaluations. . 11
-Gradient Evaluations. . 7
-Total Time. . . . . . . 0.098000
-Residual. . . . . . . . 5.222825e-009
-Postsolved residual: 5.2228e-009
-
---- Restarting execution
---- run.gms(4189) 2 Mb
---- Reading solution for model CHINA3E
---- Executing after solve: elapsed 0:00:09.263
---- run.gms(3221) 3 Mb
---- Generating MCP model CHINA3E
---- run.gms(4189) 5 Mb
---- LOOPS t = 2030
----   20 rows  838 columns  906 non-zeroes
----   120 nl-code  32 nl-non-zeroes
---- run.gms(4189) 3 Mb
---- Executing MPSGE: elapsed 0:00:09.279
-
-MPSGE: Extracting Jacobian nonzero structure.
-
---- Executing MCP subsolver PATH
-Reading dictionary...
-Reading row data...
-Evaluating functions...
-Checking model...
-Calculating Jacobian...
-
-PATH             24.4.6 r52609 Released Jun 26, 2015 WEI x86 64bit/MS Windows 
-
-130 row/cols, 3494 non-zeros, 20.67% dense.
-
-Path 4.7.02 (Fri Jun 26 15:39:32 2015)
-Written by Todd Munson, Steven Dirkse, and Michael Ferris
-
-MCPR: Zero:     0 Single:     4 Double:     0 Forced:     0
-Preprocessed size   : 126
-
-INITIAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  1.5293e+005 var: (RA)
-Maximum of F. . . . . . . . . .  1.1549e+005 eqn: (PLS.low)
-Maximum of Grad F . . . . . . .  8.0014e+006 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
-INITIAL JACOBIAN NORM STATISTICS
-Maximum Row Norm. . . . . . . .  1.2698e+007 eqn: (PL.Agri.low)
-Minimum Row Norm. . . . . . . .  1.0446e+000 eqn: (SFFELEC.Hydro)
-Maximum Column Norm . . . . . .  1.2698e+007 var: (PL.Agri.low)
-Minimum Column Norm . . . . . .  1.0000e+000 var: (RGDP)
-
-Major Iteration Log
-major minor  func  grad  residual    step  type prox    inorm  (label)
-    0     0     1     1 9.0072e+002           I 0.0e+000 8.5e+002 (PL.Agri.low)
-    1     2     5     2 3.9245e+003  5.1e-001 SB 0.0e+000 3.8e+003 (PL.Agri.low)
-    2     1     6     3 8.1424e+002  1.0e+000 SO 0.0e+000 8.1e+002 (PK)
-    3     1     7     4 2.5552e+000  1.0e+000 SO 0.0e+000 2.5e+000 (PK)
-    4     1     8     5 5.5190e-003  1.0e+000 SO 0.0e+000 4.6e-003 (PELEC.Hydro)
-    5     1     9     6 5.4883e-007  1.0e+000 SO 0.0e+000 4.6e-007 (PELEC.Hydro)
-
-FINAL STATISTICS
-Inf-Norm of Complementarity . .  2.8647e-007 eqn: (PELEC.Nuclear)
-Inf-Norm of Normal Map. . . . .  4.6329e-007 eqn: (PELEC.Hydro)
-Inf-Norm of Minimum Map . . . .  4.6329e-007 eqn: (PELEC.Hydro)
-Inf-Norm of Fischer Function. .  4.6329e-007 eqn: (PELEC.Hydro)
-Inf-Norm of Grad Fischer Fcn. .  2.4825e-002 eqn: (PELEC.Hydro)
-Two-Norm of Grad Fischer Fcn. .  3.4281e-002
-
-FINAL POINT STATISTICS
-Maximum of X. . . . . . . . . .  1.5181e+005 var: (RGDP)
-Maximum of F. . . . . . . . . .  2.0300e+000 eqn: (UR.low)
-Maximum of Grad F . . . . . . .  6.9351e+006 eqn: (PL.Agri.low)
-                                            var: (PL.Agri.low)
-
- ** EXIT - solution found.
-
-Major Iterations. . . . 5
-Minor Iterations. . . . 6
-Restarts. . . . . . . . 0
-Crash Iterations. . . . 0
-Gradient Steps. . . . . 0
-Function Evaluations. . 9
-Gradient Evaluations. . 6
-Total Time. . . . . . . 0.096000
-Residual. . . . . . . . 5.488251e-007
-Postsolved residual: 5.4883e-007
-
---- Restarting execution
---- run.gms(4189) 2 Mb
---- Reading solution for model CHINA3E
---- Executing after solve: elapsed 0:00:09.663
---- run.gms(4265) 3 Mb
-
-GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
-Input file : C:\Users\hero\Desktop\Github\CHEER-model\results.gdx
-Output file: C:\Users\hero\Desktop\Github\CHEER-model\results.xlsx
-Total time = 1454 Ms
---- run.gms(4266) 3 Mb
-
-GDXXRW           24.4.6 r52609 Released Jun 26, 2015 VS8 x86 32bit/MS Windows 
-Input file : C:\Users\hero\Desktop\Github\CHEER-model\results.gdx
-Output file: C:\Users\hero\Desktop\Github\CHEER-model\results.xlsx
-Adding new sheet: ele_out
-Total time = 1297 Ms
+--- Executing after solve: elapsed 0:00:08.777
+--- run.gms(3135) 3 Mb
 --- Putfile MPS C:\Users\hero\Desktop\Github\CHEER-model\225a\gamscge.dat
 *** Status: Normal completion
---- Job run.gms Stop 12/07/16 15:09:59 elapsed 0:00:12.702
+--- Job run.gms Stop 12/07/16 16:07:41 elapsed 0:00:08.778

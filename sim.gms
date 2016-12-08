@@ -105,9 +105,10 @@ display China3E.modelstat, China3E.solvestat,clim_s,clim_a,rate,sigma;
 UNEM(lm,z)=UR.l(lm);
 pwage(i,lm,z)=pl.l(i,lm);
 
-report2(z,i)=sum(fe,ccoef_p(fe)*qin.l(fe,i));
+report2(z,i)=sum(fe,ccoef_p(fe)*qin.l(fe,i)*(1-r_feed(fe,i));
 report2(z,"elec")=sum(sub_elec,sum(fe,ccoef_p(fe)*qin_ele.l(fe,sub_elec)));
 report2(z,"household")=sum(fe,ccoef_h(fe)*qc.l(fe));
+report2(z,"Total")=sum(i,report2(z,i))+report2(z,"household");
 
 report6(z,lm,"total")= sum(i,qlin.l(i,lm))+sum(sub_elec,qlin_ele.l(sub_elec,lm));
 report6(z,lm,i)= qlin.l(i,lm);

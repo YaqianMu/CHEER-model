@@ -2200,16 +2200,7 @@ MCP=PATH
 [RP:DYNAMIC-基准情景]
 1=
 
-[RP:TREND]
-1=
-
 [RP:WAGE_BALANCE]
-1=
-
-[RP:DYNAMIC]
-1=
-
-[RP:REPORT]
 1=
 
 [RP:LABOR MARKET]
@@ -2227,44 +2218,41 @@ MCP=PATH
 [RP:EMISSION DATA]
 1=
 
-[RP:ELECTRICITY]
+[RP:TREND]
 1=
 
-[RP:CORE]
-1=
-
-[RP:RUN]
+[RP:REPORT]
 1=
 
 [RP:CORE_1207]
 1=
 
+[RP:CORE]
+1=
+
+[RP:DYNAMIC]
+1=
+
+[RP:ELECTRICITY]
+1=
+
+[RP:RUN]
+1=
+
 [MRUFILES]
-1=C:\Users\hero\Desktop\Github\test model - V17\core_2016.gms
-2=C:\Users\hero\Desktop\Github\test model - V17\core_2016.lst
-3=C:\Users\hero\Desktop\Github\Data Process\Education & Region\Wage_balance.gms
-4=C:\Users\hero\Desktop\Github\test model - V17\core.gms
-5=C:\Users\hero\Desktop\Github\test model - V17\CHINA3E.GEN
-6=C:\Users\hero\Desktop\Github\test model - V17\dynamic-基准情景.gms
-7=C:\Users\hero\Desktop\Github\test model - V17\Data\data.gms
-8=C:\Users\hero\Desktop\Github\test model - V17\Code\Trend.gms
+1=C:\Users\hero\Desktop\Github\CHEER-model\electricity.gms
+2=E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V16 -0523-更新电力目标\electricity.gms
+3=C:\Users\hero\Desktop\Github\CHEER-model\dynamic.gms
+4=E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V16 -0523-更新电力目标\core.gms
+5=C:\Users\hero\Desktop\Github\CHEER-model\Trend.gms
+6=C:\Users\hero\Desktop\Github\CHEER-model\subsititution elasticities.gms
+7=C:\Users\hero\Desktop\Github\CHEER-model\sim.gms
+8=C:\Users\hero\Desktop\Github\CHEER-model\Sets.gms
 
 [OPENWINDOW_1]
-FILE0=C:\Users\hero\Desktop\Github\test model - V17\core_1207.gms
-FILE1=C:\Users\hero\Desktop\Github\test model - V17\dynamic.gms
-FILE2=C:\Users\hero\Desktop\Github\test model - V17\electricity.gms
-FILE3=C:\Users\hero\Desktop\Github\test model - V17\emission data.gms
-FILE4=C:\Users\hero\Desktop\Github\test model - V17\IST.gms
-FILE5=C:\Users\hero\Desktop\Github\test model - V17\labor market.gms
-FILE6=C:\Users\hero\Desktop\Github\test model - V17\report.gms
-FILE7=C:\Users\hero\Desktop\Github\test model - V17\run.gms
-FILE8=C:\Users\hero\Desktop\Github\test model - V17\run.lst
-FILE9=C:\Users\hero\Desktop\Github\test model - V17\Sets.gms
-FILE10=C:\Users\hero\Desktop\Github\test model - V17\sim.gms
-FILE11=C:\Users\hero\Desktop\Github\test model - V17\subsititution elasticities.gms
-FILE12=C:\Users\hero\Desktop\Github\test model - V17\Trend.gms
-FILE13=E:\母亚乾在清华\组内事务\自然科学基金\混合模型\test model - V16 -0523-更新电力目标\core.gms
-FILE14=C:\Users\hero\Desktop\Github\test model - V17\core_1207.gms
+FILE0=C:\Users\hero\Desktop\Github\CHEER-model\run.gms
+FILE1=C:\Users\hero\Desktop\Github\CHEER-model\run.lst
+FILE2=C:\Users\hero\Desktop\Github\CHEER-model\run.lst
 MAXIM=0
 TOP=0
 LEFT=7

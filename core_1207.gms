@@ -100,9 +100,9 @@ $prod:yelec(sub_elec)$ffe(sub_elec) s:0   kle(s):0.4 kl(kle):0.6 l(kl):eslm("l")
         i:pl("elec",lm)$hl(lm)   q:(laborelec0(sub_elec,lm)*emkup(sub_elec))          p:labor_w0("elec",lm)         l:
         i:pk                     q:(kelec0(sub_elec)*emkup(sub_elec))                         kl:
         i:py(fe)$intelec0(fe,sub_elec)    q:(intelec0(fe,sub_elec)*aeei("elec")*emkup(sub_elec))                            fe.tl:
-        i:pco2#(fe)$clim         q:(emission0("co2","e",fe,sub_elec)*aeei("elec")*emkup(sub_elec))      p:1e-5             fe.tl:
-        i:pco2_s("elec")#(fe)$clim_s("elec")         q:(emission0("co2","e",fe,sub_elec)*aeei("elec")*emkup(sub_elec))      p:1e-5             fe.tl:
-        i:pco2_a#(fe)$(clim_a and cm("elec"))         q:(emission0("co2","e",fe,sub_elec)*aeei("elec")*emkup(sub_elec))      p:1e-5             fe.tl:
+        i:pco2#(fe)$clim         q:(emissionelec0("co2","e",fe,sub_elec)*aeei("elec")*emkup(sub_elec))      p:1e-5             fe.tl:
+        i:pco2_s("elec")#(fe)$clim_s("elec")         q:(emissionelec0("co2","e",fe,sub_elec)*aeei("elec")*emkup(sub_elec))      p:1e-5             fe.tl:
+        i:pco2_a#(fe)$(clim_a and cm("elec"))         q:(emissionelec0("co2","e",fe,sub_elec)*aeei("elec")*emkup(sub_elec))      p:1e-5             fe.tl:
         I:Pers$pflag             Q:((phi/(1-phi))*outputelec0(sub_elec))
 
 *       Production of hybro and nuclear biomass electricity      va2 from wang ke
@@ -216,8 +216,14 @@ $constraint:sffelec(sub_elec)$ffelec0(sub_elec)
     sffelec(sub_elec) =e=  (pffelec(sub_elec)/pu)**eta(sub_elec);
 *     sffelec(sub_elec) =e= 1;
 
-$constraint:ur(lm)$ur0(lm)
+* wage curve for skilled labor
+$constraint:ur(lm)$(ur0(lm) and hl(lm))
       (pls(lm)/pu)/(awage_e(lm)/pu) =E=(ur(lm)/ur0(lm))**(-0.1);
+
+* rigid wage for unskilled labor
+$constraint:ur(lm)$(ur0(lm) and ll(lm))
+*      (pls(lm)/pu)/(awage_e(lm)/pu) =E=(ur(lm)/ur0(lm))**(-0.1);
+      pls(lm) =G= awage_e(lm);
 
 *== indentification of FIT
 $constraint:t_re(sub_elec)$wsb(sub_elec)
@@ -278,8 +284,9 @@ v:qffelec(sub_elec)$cfe(sub_elec)    i:pffelec(sub_elec)     prod:yelec(sub_elec
 V:qelec(sub_elec)        o:pelec(sub_elec)       prod:yelec(sub_elec)
 
 v:ECO2(i)              i:pco2         prod:y(i)
+v:ECO2_elec(sub_elec)              i:pco2        prod:yelec(sub_elec)
 v:ECO2_s(i)              i:pco2_s(i)        prod:y(i)
-v:ECO2_se(sub_elec)              i:pco2_s("elec")        prod:yelec(sub_elec)
+v:ECO2_s_elec(sub_elec)              i:pco2_s("elec")        prod:yelec(sub_elec)
 v:eco2_h                i:pco2_h        prod:consum
 
 v:dpermits(sub_elec)              i:pers        prod:yelec(sub_elec)
@@ -312,8 +319,8 @@ ur.lo(lm)=ur0(lm);
 clim_h=0;
 
 *== national emission cap
-clim=0;
-*clim0 = 0.9;
+clim=1;
+clim0 = 1;
 
 *== sectoral emission cap
 clim_s(i)=0;
@@ -321,7 +328,6 @@ clim_s(i)=0;
 *clim_s("transport")=1*Temission0('co2',"transport");
 *clim_s("EII")=0.5*Temission0('co2',"EII");
 *clim_s("elec")=0.5*Temission0('co2',"elec");
-*clim=0.5*Temission1('co2');
 
 *== multisectoral emission cap
 clim_a=0;
@@ -369,3 +375,10 @@ report10
 report11
 report12
 ;
+
+report2(i)=sum(fe,ccoef_p(fe)*qin.l(fe,i)*(1-r_feed(fe,i)));
+report2("elec")=sum(sub_elec,sum(fe,ccoef_p(fe)*qin_ele.l(fe,sub_elec)));
+report2("household")=sum(fe,ccoef_h(fe)*qc.l(fe));
+report2("Total")=sum(i,report2(i))+report2("household");
+
+display report2;
